@@ -1,0 +1,7 @@
+url:sandbox.learningregistry.org
+username:info@pgogywebstuff.com
+https:1
+signing:0
+password:
+oauthSignature:
+auth:oauth
