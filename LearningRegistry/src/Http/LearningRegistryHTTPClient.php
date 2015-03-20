@@ -12,7 +12,7 @@ use \GuzzleHttp\Exception\RequestException;
 class LearningRegistryHTTPClient extends \OAuth\Common\Http\Client\AbstractClient
 {
  
-	private $forceSSL3 = false;
+  private $forceSSL3 = false;
     private $parameters = array();
 
     public function setCurlParameters(array $parameters)
@@ -23,81 +23,81 @@ class LearningRegistryHTTPClient extends \OAuth\Common\Http\Client\AbstractClien
     {
     }
 
-	public function retrieveResponse(
+  public function retrieveResponse(
         UriInterface $endpoint,
         $requestBody,
         array $extraHeaders = array(),
         $method = 'POST'
     ) {
-		
-		$client = new \GuzzleHttp\Client();	
-		
-		if($method == "POST"){
-		
-			try {
-				$res = $client->post($endpoint, 
-					[
-						'config' => [
-							'curl' => [
-								CURLOPT_SSL_VERIFYHOST => false,
-								CURLOPT_SSL_VERIFYPEER => false,
-							]
-						],
-						'headers' => $extraHeaders,
-						'body' => $requestBody,
-					]
-				);
-				return (object) array(
-						"statusCode" => $res->getStatusCode(),
-						"response" => $res->getBody()
-					);
-			} catch (\GuzzleHttp\Exception\BadResponseException $e) {
-				if($e->hasResponse()){
-					return (object) array(
-						"statusCode" => $res->getStatusCode(),
-						"response" => $res->getBody()
-					);
-				}
-			} catch(\GuzzleHttp\Exception\RequestException $e){
-				return (object) array(
-						"statusCode" => "",
-						"response" => "Invalid URL"
-					);
-			} 
-		
-		}else{
-		
-			try {
-				$res = $client->get($endpoint, 
-					[
-						'config' => [
-							'curl' => [
-								CURLOPT_SSL_VERIFYHOST => false,
-								CURLOPT_SSL_VERIFYPEER => false,
-							]
-						],
-					]
-				);
-				return (object) array(
-						"statusCode" => $res->getStatusCode(),
-						"response" => $res->getBody()
-					);
-			} catch (\GuzzleHttp\Exception\BadResponseException $e) {
-				if($e->hasResponse()){
-					return (object) array(
-						"statusCode" => $res->getStatusCode(),
-						"response" => $res->getBody()
-					);
-				}
-			} catch(\GuzzleHttp\Exception\RequestException $e){
-				return (object) array(
-						"statusCode" => "",
-						"response" => "Invalid URL"
-					);
-			} 
-		
-		}
-				
+    
+    $client = new \GuzzleHttp\Client();  
+    
+    if($method == "POST"){
+    
+      try {
+        $res = $client->post($endpoint, 
+          [
+            'config' => [
+              'curl' => [
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+              ]
+            ],
+            'headers' => $extraHeaders,
+            'body' => $requestBody,
+          ]
+        );
+        return (object) array(
+            "statusCode" => $res->getStatusCode(),
+            "response" => $res->getBody()
+          );
+      } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+        if($e->hasResponse()){
+          return (object) array(
+            "statusCode" => $res->getStatusCode(),
+            "response" => $res->getBody()
+          );
+        }
+      } catch(\GuzzleHttp\Exception\RequestException $e){
+        return (object) array(
+            "statusCode" => "",
+            "response" => "Invalid URL"
+          );
+      } 
+    
+    }else{
+    
+      try {
+        $res = $client->get($endpoint, 
+          [
+            'config' => [
+              'curl' => [
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+              ]
+            ],
+          ]
+        );
+        return (object) array(
+            "statusCode" => $res->getStatusCode(),
+            "response" => $res->getBody()
+          );
+      } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+        if($e->hasResponse()){
+          return (object) array(
+            "statusCode" => $res->getStatusCode(),
+            "response" => $res->getBody()
+          );
+        }
+      } catch(\GuzzleHttp\Exception\RequestException $e){
+        return (object) array(
+            "statusCode" => "",
+            "response" => "Invalid URL"
+          );
+      } 
+    
+    }
+        
     }
 
 }

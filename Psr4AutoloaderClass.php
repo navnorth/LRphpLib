@@ -3,7 +3,7 @@
 class Psr4AutoloaderClass
 {
     
-	protected $prefixes = array();
+  protected $prefixes = array();
 
     public function register()
     {
@@ -31,7 +31,7 @@ class Psr4AutoloaderClass
     {
 
         $prefix = $class;
-		
+    
         while (false !== $pos = strrpos($prefix, '\\')) {
 
             $prefix = substr($class, 0, $pos + 1);
@@ -39,7 +39,7 @@ class Psr4AutoloaderClass
             $relative_class = substr($class, $pos + 1);
 
             $mapped_file = $this->loadMappedFile($prefix, $relative_class);
-			
+      
             if ($mapped_file) {
                 return $mapped_file;
             }
@@ -52,7 +52,7 @@ class Psr4AutoloaderClass
 
     protected function loadMappedFile($prefix, $relative_class)
     {
-		if (isset($this->prefixes[$prefix]) === false) {
+    if (isset($this->prefixes[$prefix]) === false) {
             return false;
         }
 
@@ -60,7 +60,7 @@ class Psr4AutoloaderClass
             $file = $base_dir
                   . str_replace('\\', '/', $relative_class)
                   . '.php';
-			
+      
             if ($this->requireFile($file)) {
                 return $file;
             }

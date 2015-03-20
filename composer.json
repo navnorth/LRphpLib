@@ -1,9 +1,8 @@
 {
     "require": {
         "guzzlehttp/guzzle": "5.2.0",
-        "rych/bencode": "1.0",
-		"mudhairless/openpgp": "1.0",
-		"lusitanian/oauth": "0.3.5"
+        "mudhairless/openpgp": "1.0",
+	"lusitanian/oauth": "0.3.5"
     }
 
 }

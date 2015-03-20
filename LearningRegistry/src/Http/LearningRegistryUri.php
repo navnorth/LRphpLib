@@ -7,49 +7,49 @@ class LearningRegistryUri extends \OAuth\Common\Http\Uri\Uri
    
     private $host = "";
     private $path = "";
-	private $query = "";
+  private $query = "";
 
     /**
      * @return string
      */
     public function getHost(){
-		return $this->host;
-	}
+    return $this->host;
+  }
 
     /**
      * @param string $host
      */
     public function setHost($host){
-		$this->host = $host;
-	}
+    $this->host = $host;
+  }
 
     /**
      * @return string
      */
     public function getPath(){
-		return $this->path;
-	}
+    return $this->path;
+  }
 
     /**
      * @param string $path
      */
     public function setPath($path){
-		$this->path .= $path;
-	}
+    $this->path .= $path;
+  }
 
     /**
      * @return string
      */
     public function getQuery(){
-		return $this->query;
-	}
+    return $this->query;
+  }
 
     /**
      * @param string $query
      */
     public function setQuery($query){
-		$this->query .= $query;
-	}
+    $this->query .= $query;
+  }
 
     /**
      * Adds a param to the query string.
@@ -58,8 +58,8 @@ class LearningRegistryUri extends \OAuth\Common\Http\Uri\Uri
      * @param string $val
      */
     public function addToQuery($var, $val){
-		$this->setQuery($var . "=" . $val);
-	}
+    $this->setQuery($var . "=" . $val);
+  }
 
 
     /**
@@ -68,12 +68,12 @@ class LearningRegistryUri extends \OAuth\Common\Http\Uri\Uri
      * @return string the URI string with user protected info masked
      */
     public function __toString(){
-		$query = $this->getQuery();
-		if($query == ""){
-			return $this->host . $this->getPath();
-		}else{
-			return $this->host . $this->getPath() . "?" . $query;
-		}
-	}
+    $query = $this->getQuery();
+    if($query == ""){
+      return $this->host . $this->getPath();
+    }else{
+      return $this->host . $this->getPath() . "?" . $query;
+    }
+  }
 
 }
