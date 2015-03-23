@@ -6,9 +6,9 @@
   
     protected $services = array();
   
-    function list_services(){
-    
-      $responseBody = json_decode($this->data->getBody());
+    function listServices(){
+	
+      $responseBody = json_decode($this->data->response);
       foreach($responseBody->services as $service){
         if($service->active == 1){
           $this->services[] = $service->service_name;
@@ -19,7 +19,7 @@
     }
     
     function servicesService(){
-      $this->service($this->getNodeUrl(), "status", null, null, "GET");
+      $this->service($this->getNodeUrl(), "services", null, null, "GET");
     }
     
   }

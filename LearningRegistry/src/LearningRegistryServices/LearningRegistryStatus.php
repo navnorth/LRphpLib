@@ -4,8 +4,8 @@
 
   class LearningRegistryStatus extends LearningRegistryDefault{
   
-    function data(){
-      $responseBody = json_decode($this->data->getBody());
+    function showStatus(){
+      $responseBody = json_decode($this->data->response);
       print_r($responseBody);  
     }
   

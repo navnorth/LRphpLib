@@ -39,6 +39,14 @@
       return false;
     }
     
+	function getpublicKeyPath(){
+      return $this->LearningRegistryConfig->getpublicKeyPath();
+    }
+	
+	function getKeyPath(){
+      return $this->LearningRegistryConfig->getKeyPath();
+    }
+	
     function getSigning(){
       return $this->LearningRegistryConfig->getSigning();
     }

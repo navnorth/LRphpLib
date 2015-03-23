@@ -4,6 +4,26 @@
 
   class LearningRegistryUpdate extends LearningRegistryPublish{
   
+    function verifyUpdatedDocument($tos = FALSE){
+      
+      if($this->verifyDocument()){
+    
+        if(!isset($this->resourceData->replaces)){
+          trigger_error("replaces not set");
+          return false;
+        }
+      
+        if(!isset($this->resourceData->resource_data)){
+          trigger_error("resource_data not set");
+          return false;
+        }
+
+        return true;  
+
+      }
+    
+    }
+  
     function updateService(){
       if($this->document != false){
         if($this->getAuthorization() == "basic"){

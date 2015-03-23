@@ -1,7 +1,9 @@
-url:sandbox.learningregistry.org
-username:info@pgogywebstuff.com
-https:1
-signing:0
-password:
-oauthSignature:
-auth:oauth
+url::sandbox.learningregistry.org
+username::info@pgogywebstuff.com
+https::1
+signing::1
+password::
+oauthSignature::
+auth::
+keyPath::c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg
+publicKeyPath::http://www.pgogywebstuff.com/public_key.txt

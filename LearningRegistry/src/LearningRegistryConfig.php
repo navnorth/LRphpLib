@@ -11,7 +11,17 @@
     protected $signing;
     protected $auth;
     protected $oauthSignature;
+    protected $keyPath;
+    protected $publicKeyPath;
     
+	function setKeyPath($keyPath){
+      $this->keyPath = $keyPath;
+    }
+	
+	function setPublicKeyPath($publicKey){
+      $this->publicKeyPath = $publicKey;
+    }
+	
     function setSigning($signing){
       $this->signing = $signing;
     }
@@ -40,6 +50,20 @@
       $this->url = $url;
     }
     
+	function getPublicKeyPath(){
+      if(isset($this->publicKeyPath)){
+        return $this->publicKeyPath;
+      }
+      return false;
+    }
+	
+	function getKeyPath(){
+      if(isset($this->keyPath)){
+        return $this->keyPath;
+      }
+      return false;
+    }
+	
     function getSigning(){
       if(isset($this->signing)){
         return $this->signing;
@@ -119,7 +143,7 @@
       }
     
       foreach($parameters as $parameter){
-        $variables = explode(":", $parameter);
+        $variables = explode("::", $parameter);
         $this->{trim($variables[0])} = trim($variables[1]);  
       }
       
@@ -139,21 +163,9 @@
     
     function process_json($config){
     
-      if(isset($config->username)){
-        $this->username = $config->username;
-      }
-      
-      if(isset($config->password)){
-        $this->password = $config->password;
-      }
-      
-      if(isset($config->auth)){
-        $this->auth = $config->auth;
-      }
-      
-      if(isset($config->oauthSignature)){
-        $this->oauthSignature = $config->oauthSignature;
-      }
+      foreach($config as $key => $value){
+        $this->{$key} = $value;
+	  }
       
       if(isset($config->url)){
         if(filter_var("http://" . $config->url, FILTER_VALIDATE_URL) === false) {
@@ -166,35 +178,15 @@
         $this->url = $config->url;
       }
       
-      if(isset($config->https)){
-        $this->https = (integer) $config->https;
-      }
-      
-      if(isset($config->signing)){
-        $this->signing = (integer) $config->signing;
-      }
-      
       return true;
 
     }
     
     function process_array($config){
     
-      if(isset($config['username'])){
-        $this->username = $config['username'];
-      }
-      
-      if(isset($config['password'])){
-        $this->password = $config['password'];
-      }
-      
-      if(isset($config['auth'])){
-        $this->auth = $config['auth'];
-      }
-      
-      if(isset($config['oauthSignature'])){
-        $this->oauthSignature = $config['oauthSignature'];
-      }
+      foreach($config as $key => $value){
+        $this->{$key} = $value;
+	  }
       
       if(isset($config['url'])){
         if(filter_var("http://" . $config['url'], FILTER_VALIDATE_URL) === false) {
@@ -205,14 +197,6 @@
           $config['url'] .= "/";
         }
         $this->url = $config['url'];
-      }
-      
-      if(isset($config['https'])){
-        $this->https = (integer) $config['https'];
-      }
-      
-      if(isset($config['signing'])){
-        $this->signing = (integer) $config['signing'];
       }
       
       return true;

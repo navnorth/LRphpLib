@@ -1,9 +1,9 @@
 {
 	"url":"sandbox.learningregistry.org",
-	"username":"info@pgogywebstuff.com",
+	"username":"",
 	"https": 1,
 	"signing": 1,
-	"password": "Fearher0!",
-	"oauthSignature" : "wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D",
+	"password": "",
+	"oauthSignature" : "",
 	"auth": "oauth"
 }

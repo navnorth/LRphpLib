@@ -3,9 +3,21 @@
 require dirname(__FILE__) . "/vendor/autoload.php";
 require dirname(__FILE__) . "/Psr4AutoloaderClass.php";
 
-$LRConfig = new LearningRegistry\LearningRegistryConfig("C:/xampp/htdocs/learningregistry/config.txt");
+$LRConfig = new LearningRegistry\LearningRegistryConfig(
+                                                           array(
+														     "url" => "sandbox.learningregistry.org",
+														     "username" => "info@pgogywebstuff.com",
+														     "https" => 1,
+														     "signing" => 0,
+														     "password" => "",
+														     "oauthSignature" => "",
+														     "auth" => "oauth",
+														     "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg",
+														     "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt"
+														   )
+);
 
-$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRConfig);
+$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdate($LRConfig);
 if($LR->checkNode()){
   if($LR->checkNodeActive()){
     
@@ -24,18 +36,16 @@ if($LR->checkNode()){
         'resource_locator' => "www.wibble.com",
         'resource_data_type' => 'metadata', 
         'active' => TRUE,
-        //'replaces' => array('27a5d1852fb24d98bc731578d92cd155'),
         'submitter_timestamp' => "",
         'submitter_TTL' => "",
         'resource_TTL' => "",
         'payload_schema_locator' => "",
-        //'payload_locator' => "here",
+        //'payload_locator' => "www.wibble.com",
         'payload_schema_format' => "",
         'doc_type' => 'resource_data',
         'doc_version' => '0.49.0',
-        'payload_placement' => 'attached',
+        'payload_placement' => 'inline',
         'payload_schema' => array('DC 1.1'),
-        'resource_data' => htmlspecialchars_decode("package"),
         'keys' => array("hello")
       )
     );
@@ -52,22 +62,26 @@ if($LR->checkNode()){
     
     $LR->setTosFields(
       array(
-        'tos_submission_attribution' => "",
+        //'tos_submission_attribution' => "",
         'submission_TOS' => "Standard",
       )
     );
     
+	$LR->setResFields(
+		array(
+			'resource_data' => htmlspecialchars_decode("I am some data"),
+			'replaces' => array("25f43f6f8c764be9a92e216e33f8f16c"),
+		)
+	  );
+	  
+	
     $LR->createDocument();
-    //if($LR->verifyDocument()){
-      $LR->signDocument();
-      //if($LR->verifySignedDocument()){
-        $LR->finaliseDocument();
-        $LR->PublishService();
-        $response = $LR->getDocData();
-        $data = json_decode($response->response);
-        print_r($data->document_results[0]->error);
-      //}
-    //}
+    if($LR->verifyUpdatedDocument()){
+	  $LR->finaliseDocument();
+	  $LR->UpdateService();
+	  $response = $LR->getDocData();
+	  print_r(json_decode($response->response));
+    }
     
   }else{
     print_r($LR->getResponse());

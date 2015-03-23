@@ -105,7 +105,7 @@
       
     }
     
-    function verifyDocument(){
+    function verifyDocument($tos = FALSE){
       
       if(!isset($this->resourceData->identity->submitter)){
         trigger_error("submitter not set");
@@ -142,7 +142,6 @@
         return false;
       }
       
-      
       if(isset($this->resourceData->payload_placement)){
         if($this->resourceData->payload_placement == "inline"){
           if(!isset($this->resourceData->resource_data)){
@@ -151,6 +150,13 @@
           }
         }
       }
+	  
+	  if($tos){
+	    if(!isset($this->TOS->submission_TOS)){
+          trigger_error("doc version not set");
+          return false;
+        }
+	  }
       
       if(!isset($this->resourceData->payload_schema)){
         trigger_error("payload schema not set");
@@ -179,28 +185,35 @@
           $document->{$term} = $value;
         }
       }
-      
+	  
+	  unset($document->digital_signature);
+	  unset($document->_id);
+	  unset($document->_rev);
+	  unset($document->doc_id);
+	  unset($document->publishing_node);
+      unset($document->update_timestamp);
+      unset($document->node_timestamp);
+      unset($document->create_timestamp);
+	  
       $jsonDocument = json_encode($document);
       $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
       $bencodedDocument = $bencoder->encode($jsonDocument);
-      $hashedDocument = hash('SHA256', (string) $bencodedDocument);
-      
-      $wkey = \OpenPGP\Message::parse(file_get_contents("c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg"));
+      $hashedDocument = hash('SHA256', $bencodedDocument);
+	  
+      $wkey = \OpenPGP\Message::parse(file_get_contents($this->getKeyPath()));
       $RSA = new \OpenPGP\Crypt\RSA($wkey);
       
       $wkey->packets[0]->key['d'] = $wkey->packets[0]->key['e'];
       $wkey->packets[0]->key['p'] = $wkey->packets[0]->key['e'];
       $wkey->packets[0]->key['q'] = $wkey->packets[0]->key['e'];
       $wkey->packets[0]->key['u'] = $wkey->packets[0]->key['e'];
-      
+	  
       $m = $RSA->sign($hashedDocument);
-      
-      $signedDocument = $m->to_bytes();
-      
+	  
       $this->setSigFields(
         array(
-          'signature'  => $signedDocument,
-          'key_location'  => array("www.google.com"),
+          'signature'  => $m[1]->data,
+          'key_location'  => array($this->getPublicKeyPath()),
           'signing_method'  => "LR-PGP.1.0",
         )
       );
@@ -236,7 +249,7 @@
     
     function finaliseDocument(){
     
-      $submission = new \StdClass();      
+      $submission = new \StdClass();
       $submission->documents[] = $this->resourceData;
       $data_to_send = json_encode($submission);      
       $this->document = $data_to_send;
@@ -244,12 +257,12 @@
     }
     
     function publishService(){
+	  
       if(!isset($this->document)){
         $this->document = $this->createDocument();
       }
-      echo "here i am";
+	  
       if($this->document){
-        echo "here";
         if($this->getAuthorization() == "basic"){
           if($this->getPassword() == false || $this->getUsername() == false){
             trigger_error("Username and Password not set");
@@ -261,6 +274,7 @@
         }
         $this->service($this->getNodeUrl(), "publish", $this->getAuthorization(), $this->document, "POST");
       }
+	  
     }
     
   }
