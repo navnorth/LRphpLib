@@ -10,6 +10,13 @@
       $this->LearningRegistryConfig = $config;
     }
     
+	function getStatusCode(){  
+      if(is_object(json_decode($this->data->response))){
+        $data = $this->data->statusCode;
+        return $data;
+      }
+    }
+	
     function getResponse(){  
       if(is_object(json_decode($this->data->response))){
         return json_decode($this->data->response);
