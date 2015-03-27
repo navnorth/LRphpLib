@@ -1,7 +1,7 @@
 <?PHP
 
-require dirname(__FILE__) . "/vendor/autoload.php";
-require dirname(__FILE__) . "/Psr4AutoloaderClass.php";
+require dirname(__FILE__) . "/../vendor/autoload.php";
+require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                            array(

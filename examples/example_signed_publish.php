@@ -1,14 +1,14 @@
 <?PHP
 
-require dirname(__FILE__) . "/vendor/autoload.php";
-require dirname(__FILE__) . "/Psr4AutoloaderClass.php";
+require dirname(__FILE__) . "/../vendor/autoload.php";
+require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                            array(
 														     "url" => "sandbox.learningregistry.org",
 														     "username" => "info@pgogywebstuff.com",
 														     "https" => 1,
-														     "signing" => 0,
+														     "signing" => 1,
 														     "password" => "",
 														     "oauthSignature" => "",
 														     "auth" => "oauth",
@@ -33,7 +33,7 @@ if($LR->checkNode()){
     
     $LR->setResFields(
       array(
-        'resource_locator' => "www.wibble.com",
+        'resource_locator' => "http://www.wibble.com",
         'resource_data_type' => 'metadata', 
         'active' => TRUE,
         //'replaces' => array('27a5d1852fb24d98bc731578d92cd155'),
@@ -77,10 +77,13 @@ if($LR->checkNode()){
 	
     $LR->createDocument();
     if($LR->verifyDocument()){
-	  $LR->finaliseDocument();
-	  $LR->PublishService();
-	  $response = $LR->getDocData();
-	  print_r(json_decode($response->response));
+	  $LR->signDocument();
+	  if($LR->verifySignedDocument()){
+	    $LR->finaliseDocument();
+	    $LR->PublishService();
+	    $response = $LR->getDocData();
+	    print_r(json_decode($response->response));
+	  }
     }
     
   }else{

@@ -1,4 +1,4 @@
-<?php
+<?PHP
 /**
  * Rych Bencode Component
  *
@@ -25,7 +25,7 @@ class LearningRegistryBencodeEncoder
     /**
      * @var mixed Entity to be encoded.
      */
-    private $_data;
+    private $data;
 
     /**
      * Class constructor
@@ -35,7 +35,7 @@ class LearningRegistryBencodeEncoder
      */
     public function __construct($data)
     {
-        $this->_data = $data;
+        $this->data = $data;
     }
 
     /**
@@ -44,7 +44,7 @@ class LearningRegistryBencodeEncoder
      * @param mixed $data The value to be encoded.
      * @return string Returns the bencoded entity.
      */
-    static public function encode($data)
+    public static function encode($data)
     {
         if (is_object($data)) {
             if (method_exists($data, 'toArray')) {
@@ -55,7 +55,7 @@ class LearningRegistryBencodeEncoder
         }
 
         $encoder = new self($data);
-        return $encoder->_encode();
+        return $encoder->encode();
     }
 
     /**
@@ -64,19 +64,19 @@ class LearningRegistryBencodeEncoder
      * @param mixed $data The value to be encoded.
      * @return string Returns the bencoded entity.
      */
-    private function _encode($data = null)
+    private function encode($data = null)
     {
-        $data = is_null($data) ? $this->_data : $data;
+        $data = is_null($data) ? $this->data : $data;
 
         if (is_array($data) && (isset ($data[0]) || empty ($data))) {
-            return $this->_encodeList($data);
-        } else if (is_array($data)) {
-            return $this->_encodeDict($data);
-        } else if (is_integer($data) || is_float($data)) {
+            return $this->encodeList($data);
+        } elseif (is_array($data)) {
+            return $this->encodeDict($data);
+        } elseif (is_integer($data) || is_float($data)) {
             $data = sprintf('%.0f', round($data, 0));
-            return $this->_encodeInteger($data);
+            return $this->encodeInteger($data);
         } else {
-            return $this->_encodeString($data);
+            return $this->encodeString($data);
         }
     }
 
@@ -86,9 +86,9 @@ class LearningRegistryBencodeEncoder
      * @param integer $data The integer to be encoded.
      * @return string Returns the bencoded integer.
      */
-    private function _encodeInteger($data = null)
+    private function encodeInteger($data = null)
     {
-        $data = is_null($data) ? $this->_data : $data;
+        $data = is_null($data) ? $this->data : $data;
         return sprintf('i%.0fe', $data);
     }
 
@@ -98,9 +98,9 @@ class LearningRegistryBencodeEncoder
      * @param string $data The string to be encoded.
      * @return string Returns the bencoded string.
      */
-    private function _encodeString($data = null)
+    private function encodeString($data = null)
     {
-        $data = is_null($data) ? $this->_data : $data;
+        $data = is_null($data) ? $this->data : $data;
         return sprintf('%d:%s', strlen($data), $data);
     }
 
@@ -110,13 +110,13 @@ class LearningRegistryBencodeEncoder
      * @param array $data The numerically indexed array to be encoded.
      * @return string Returns the bencoded list.
      */
-    private function _encodeList(array $data = null)
+    private function encodeList(array $data = null)
     {
-        $data = is_null($data) ? $this->_data : $data;
+        $data = is_null($data) ? $this->data : $data;
 
         $list = '';
         foreach ($data as $value) {
-            $list .= $this->_encode($value);
+            $list .= $this->encode($value);
         }
 
         return "l{$list}e";
@@ -128,17 +128,16 @@ class LearningRegistryBencodeEncoder
      * @param array $data The associative array to be encoded.
      * @return string Returns the bencoded dictionary.
      */
-    private function _encodeDict(array $data = null)
+    private function encodeDict(array $data = null)
     {
-        $data = is_null($data) ? $this->_data : $data;
+        $data = is_null($data) ? $this->data : $data;
         ksort($data); // bencode spec requires dicts to be sorted alphabetically
 
         $dict = '';
         foreach ($data as $key => $value) {
-            $dict .= $this->_encodeString($key) . $this->_encode($value);
+            $dict .= $this->encodeString($key) . $this->encode($value);
         }
 
         return "d{$dict}e";
     }
-
 }

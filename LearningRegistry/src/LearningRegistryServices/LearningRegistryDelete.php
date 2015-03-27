@@ -2,41 +2,43 @@
 
   namespace LearningRegistry\LearningRegistryServices;
 
-  class LearningRegistryDelete extends LearningRegistryDefault{
+class LearningRegistryDelete extends LearningRegistryDefault
+{
   
     protected $ids;
   
-    function set_ids($ids){
-      $this->ids = $ids;
+    public function setIds($ids)
+    {
+        $this->ids = $ids;
     }
   
-    function create_document(){
+    public function createDocument()
+    {
     
-      $submission = new \StdClass;
+        $submission = new \StdClass;
       
-      $submission->request_ids[] = $this->ids;
+        $submission->request_ids[] = $this->ids;
       
-      $data_to_send = json_encode($submission);
+        $data_to_send = json_encode($submission);
       
-      return $data_to_send;
+        return $data_to_send;
     
     }
     
-    function publishService(){
-      $this->document = $this->create_document();
-      if($this->document != false){
-        if($this->getAuthorization() == "basic"){
-          if($this->getPassword() == false || $this->getUsername() == false){
-            trigger_error("Username and Password not set");
-          }
-        } else if($this->getAuthorization() == "oauth"){
-          if($this->getUsername() == false || $this->getOAuthSignature() == false){
-            trigger_error("Username and OAuth not set");
-          }
+    public function publishService()
+    {
+        $this->document = $this->create_document();
+        if ($this->document != false) {
+            if ($this->getAuthorization() == "basic") {
+                if ($this->getPassword() == false || $this->getUsername() == false) {
+                    trigger_error("Username and Password not set");
+                }
+            } elseif ($this->getAuthorization() == "oauth") {
+                if ($this->getUsername() == false || $this->getOAuthSignature() == false) {
+                    trigger_error("Username and OAuth not set");
+                }
+            }
+            $this->service($this->getNodeUrl(), "publish", $this->getAuthorization(), $this->document, "POST");
         }
-        $this->service($this->getNodeUrl(), "publish", $this->getAuthorization(), $this->document, "POST");
-      }
     }
-    
-    
-  }
+}

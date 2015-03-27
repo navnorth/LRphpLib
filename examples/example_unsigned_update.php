@@ -1,14 +1,14 @@
 <?PHP
 
-require dirname(__FILE__) . "/vendor/autoload.php";
-require dirname(__FILE__) . "/Psr4AutoloaderClass.php";
+require dirname(__FILE__) . "/../vendor/autoload.php";
+require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                            array(
 														     "url" => "sandbox.learningregistry.org",
 														     "username" => "info@pgogywebstuff.com",
 														     "https" => 1,
-														     "signing" => 1,
+														     "signing" => 0,
 														     "password" => "",
 														     "oauthSignature" => "",
 														     "auth" => "oauth",
@@ -17,7 +17,7 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
 														   )
 );
 
-$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRConfig);
+$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdate($LRConfig);
 if($LR->checkNode()){
   if($LR->checkNodeActive()){
     
@@ -33,10 +33,9 @@ if($LR->checkNode()){
     
     $LR->setResFields(
       array(
-        'resource_locator' => "http://www.wibble.com",
+        'resource_locator' => "www.wibble.com",
         'resource_data_type' => 'metadata', 
         'active' => TRUE,
-        //'replaces' => array('27a5d1852fb24d98bc731578d92cd155'),
         'submitter_timestamp' => "",
         'submitter_TTL' => "",
         'resource_TTL' => "",
@@ -71,19 +70,17 @@ if($LR->checkNode()){
 	$LR->setResFields(
 		array(
 			'resource_data' => htmlspecialchars_decode("I am some data"),
+			'replaces' => array("25f43f6f8c764be9a92e216e33f8f16c"),
 		)
 	  );
 	  
 	
     $LR->createDocument();
-    if($LR->verifyDocument()){
-	  $LR->signDocument();
-	  if($LR->verifySignedDocument()){
-	    $LR->finaliseDocument();
-	    $LR->PublishService();
-	    $response = $LR->getDocData();
-	    print_r(json_decode($response->response));
-	  }
+    if($LR->verifyUpdatedDocument()){
+	  $LR->finaliseDocument();
+	  $LR->UpdateService();
+	  $response = $LR->getDocData();
+	  print_r(json_decode($response->response));
     }
     
   }else{

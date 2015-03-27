@@ -1,4 +1,4 @@
-<?php
+<?PHP
 namespace LearningRegistry\OAuth;
 
 use \OAuth\Common\Consumer\CredentialsInterface;
@@ -80,8 +80,8 @@ class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2
      * @throws Exception
      */
     public function request($path, $method = 'GET', $body = null, array $extraHeaders = array())
-    {    
-    return $this->httpClient->retrieveResponse($path, $body, $extraHeaders, $method);
+    {
+        return $this->httpClient->retrieveResponse($path, $body, $extraHeaders, $method);
     }
     /**
      * Accessor to the storage adapter to be able to retrieve tokens
@@ -182,17 +182,20 @@ class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2
      *
      * @throws TokenResponseException
      */
-    public function getAccessTokenEndpoint(){
+    public function getAccessTokenEndpoint()
+    {
   
-  }
+    }
   
-    public function getAuthorizationEndpoint(){
+    public function getAuthorizationEndpoint()
+    {
   
-  }
+    }
   
-  public function parseAccessTokenResponse(){
+    public function parseAccessTokenResponse()
+    {
   
-  }
+    }
     /**
      * Returns a class constant from ServiceInterface defining the authorization method used for the API
      * Header is the sane default.
@@ -205,11 +208,10 @@ class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2
     
     /**
      * Returns api version string if is set else retrun empty string
-     * 
+     *
      * @return string
      */
     protected function getApiVersionString()
     {
     }
-  
 }
