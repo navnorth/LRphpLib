@@ -20,21 +20,21 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
 $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdate($LRConfig);
 if($LR->checkNode()){
   if($LR->checkNodeActive()){
-    
+
     $LR->setIdFields(
       array(
         'curator' => "info@pgogywebstuff.com",
         'owner' => "info@pgogywebstuff.com",
         'signer' => "info@pgogywebstuff.com",
-        'submitter_type' => "user", 
+        'submitter_type' => "user",
         'submitter' => "info@pgogywebstuff.com"
       )
     );
-    
+
     $LR->setResFields(
       array(
         'resource_locator' => "www.wibble.com",
-        'resource_data_type' => 'metadata', 
+        'resource_data_type' => 'metadata',
         'active' => TRUE,
         'submitter_timestamp' => "",
         'submitter_TTL' => "",
@@ -49,7 +49,7 @@ if($LR->checkNode()){
         'keys' => array("hello")
       )
     );
-    
+
     $LR->setSigFields(
       array(
         'signature'  => "",
@@ -59,22 +59,22 @@ if($LR->checkNode()){
         'signing_method'  => "",
       )
     );
-    
+
     $LR->setTosFields(
       array(
         //'tos_submission_attribution' => "",
-        'submission_TOS' => "Standard",
+        'submission_TOS' => "http://learningregistry.org/tos",
       )
     );
-    
+
 	$LR->setResFields(
 		array(
 			'resource_data' => htmlspecialchars_decode("I am some data"),
 			'replaces' => array("25f43f6f8c764be9a92e216e33f8f16c"),
 		)
 	  );
-	  
-	
+
+
     $LR->createDocument();
     if($LR->verifyUpdatedDocument()){
 	  $LR->finaliseDocument();
@@ -82,7 +82,7 @@ if($LR->checkNode()){
 	  $response = $LR->getDocData();
 	  print_r(json_decode($response->response));
     }
-    
+
   }else{
     print_r($LR->getResponse());
   }

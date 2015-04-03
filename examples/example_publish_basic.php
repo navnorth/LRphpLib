@@ -28,25 +28,25 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
 // Check the node is active (optional)
 
   //if($LR->checkNodeActive()){
-    
+
 	// Set the id fields - can be done one parameter at a time
-	
+
     $LR->setIdFields(
       array(
         'curator' => "info@pgogywebstuff.com",
         'owner' => "info@pgogywebstuff.com",
         'signer' => "info@pgogywebstuff.com",
-        'submitter_type' => "user", 
+        'submitter_type' => "user",
         'submitter' => "info@pgogywebstuff.com"
       )
     );
-    
+
 	// Set the resource fields - can be done one parameter at a time
-	
+
     $LR->setResFields(
       array(
         'resource_locator' => "www.wibble.com", //url goes here
-        'resource_data_type' => 'metadata', 
+        'resource_data_type' => 'metadata',
         'active' => TRUE,
         //'submitter_timestamp' => "",
         //'submitter_TTL' => "",
@@ -60,7 +60,7 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
         'keys' => array() // add keys here
       )
     );
-    
+
     $LR->setSigFields(
       array(
         'signature'  => "", // mostly set later if signing needed - here now for reference
@@ -70,39 +70,39 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
         'signing_method'  => "",
       )
     );
-    
+
     $LR->setTosFields(
       array(
         //'tos_submission_attribution' => "",
-        'submission_TOS' => "Standard",
+        'submission_TOS' => "http://learningregistry.org/tos",
       )
     );
-    
+
 	$LR->setResFields(
 		array(
 			'resource_data' => htmlspecialchars_decode("I am some data"), // setting the resource data
 		)
 	  );
-	  
-	
+
+
 	// Turn the arrays above into a document
     $LR->createDocument();
-	
+
 	// Verify the document is ok (optional)
-	
+
     if($LR->verifyDocument()){
-	
+
 	  // make the document into LR format and ready
-	
+
 	  $LR->finaliseDocument();
-	  
+
 	  // send the document
-	  
+
 	  $LR->PublishService();
 	  echo "the response code is " . $LR->getStatusCode() . "<br />";
 	  echo "the doc ID is " . $LR->getDocID() . "<br />";
     }
-    
+
 //  }
-  
+
 //}
