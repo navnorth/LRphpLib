@@ -5,15 +5,15 @@ require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                            array(
-														     "url" => "sandbox.learningregistry.org",
-														     "username" => "info@pgogywebstuff.com",
-														     "https" => 1,
-														     "signing" => 1,
-														     "password" => "",
-														     "oauthSignature" => "",
-														     "auth" => "oauth",
-														     "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg",
-														     "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt"
+														     "url" => "sandbox.learningregistry.org", //ul
+														     "username" => "info@pgogywebstuff.com", //username
+														     "https" => 1, //whether the use https
+														     "signing" => 1, //sign or not sign
+														     "password" => "", // passowrd
+														     "oauthSignature" => "", // oauth signature
+														     "auth" => "oauth", // use oauth or basic
+														     "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg", // path to key file
+														     "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
 														   )
 );
 
@@ -82,7 +82,12 @@ if($LR->checkNode()){
 	    $LR->finaliseDocument();
 	    $LR->PublishService();
 	    $response = $LR->getDocData();
-	    print_r(json_decode($response->response));
+		if($response->statusCode==200){
+			echo $LR->getDocId();
+		}else{
+			echo $response->statusCode . "<br />";
+			echo $LR->getMessage();
+		}
 	  }
     }
 
