@@ -12,6 +12,14 @@ class LearningRegistryDefault
         $this->LearningRegistryConfig = $config;
     }
     
+	public function getMessage()
+    {
+        if (is_object(json_decode($this->data->response))) {
+			$data = json_decode($this->data->response);
+            return $data->message;
+        }
+    }
+	
     public function getStatusCode()
     {
         if (is_object(json_decode($this->data->response))) {

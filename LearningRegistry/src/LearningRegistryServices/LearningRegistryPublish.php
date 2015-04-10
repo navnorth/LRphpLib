@@ -207,7 +207,7 @@ class LearningRegistryPublish extends LearningRegistryDefault
       
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
-        $bencodedDocument = $bencoder->encode($jsonDocument);
+        $bencodedDocument = $bencoder->encodeData($jsonDocument);
         $hashedDocument = hash('SHA256', $bencodedDocument);
       
         $wkey = \OpenPGP\Message::parse(file_get_contents($this->getKeyPath()));
