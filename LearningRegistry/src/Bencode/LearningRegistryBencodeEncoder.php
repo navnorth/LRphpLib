@@ -44,7 +44,7 @@ class LearningRegistryBencodeEncoder
      * @param mixed $data The value to be encoded.
      * @return string Returns the bencoded entity.
      */
-    public static function encode($data)
+    public static function encodeData($data)
     {
         if (is_object($data)) {
             if (method_exists($data, 'toArray')) {
