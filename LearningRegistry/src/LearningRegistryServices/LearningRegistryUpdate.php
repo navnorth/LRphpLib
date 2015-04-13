@@ -5,6 +5,12 @@
 class LearningRegistryUpdate extends LearningRegistryPublish
 {
   
+    public function getNewID()
+    {
+        $data = json_decode($this->data->response);
+        return $data->document_results[0]->doc_ID;
+    }
+  
     public function verifyUpdatedDocument($tos = false)
     {
       
