@@ -46,20 +46,20 @@ class LearningRegistryHTTPClient extends \OAuth\Common\Http\Client\AbstractClien
                     'headers' => $extraHeaders,
                     'body' => $requestBody,
                     ]
-                );				
+                );
                 return (object) array(
                 "statusCode" => $res->getStatusCode(),
                 "response" => $res->getBody()
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-				if ($e->hasResponse()) {
+                if ($e->hasResponse()) {
                     return (object) array(
                     "statusCode" => $e->getResponse()->getStatusCode(),
                     "response" => $e->getResponse()->getBody()
                     );
                 }
             } catch (\GuzzleHttp\Exception\RequestException $e) {
-				return (object) array(
+                return (object) array(
                 "statusCode" => "",
                 "response" => "Invalid URL"
                 );
@@ -83,14 +83,14 @@ class LearningRegistryHTTPClient extends \OAuth\Common\Http\Client\AbstractClien
                 "response" => $res->getBody()
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-				if ($e->hasResponse()) {
+                if ($e->hasResponse()) {
                     return (object) array(
                     "statusCode" => $e->getResponse()->getStatusCode(),
                     "response" => $e->getResponse()->getBody()
                     );
                 }
             } catch (\GuzzleHttp\Exception\RequestException $e) {
-			    return (object) array(
+                return (object) array(
                 "statusCode" => "",
                 "response" => "Invalid URL"
                 );
