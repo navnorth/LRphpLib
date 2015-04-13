@@ -9,9 +9,9 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "username" => "info@pgogywebstuff.com", //username
                                                              "https" => 1, //whether the use https
                                                              "signing" => 1, //sign or not sign
-                                                             "password" => "", // passowrd
+                                                             "password" => "Fearher0!", // passowrd
                                                              "oauthSignature" => "", // oauth signature
-                                                             "auth" => "oauth", // use oauth or basic
+                                                             "auth" => "basic", // use oauth or basic
                                                              "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg", // path to key file
                                                              "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )

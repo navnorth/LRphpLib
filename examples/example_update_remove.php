@@ -5,30 +5,30 @@ require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
     array(
-                                                             "url" => "sandbox.learningregistry.org",
-                                                             "username" => "info@pgogywebstuff.com",
-                                                             "https" => 1,
-                                                             "signing" => 0,
-                                                             "password" => "",
-                                                             "oauthSignature" => "",
-                                                             "auth" => "basic",
-                                                             "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg",
-                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt"
+                                                             "url" => "sandbox.learningregistry.org", //ul
+                                                             "username" => "info@pgogywebstuff.com", //username
+                                                             "https" => 1, //whether the use https
+                                                             "signing" => 1, //sign or not sign
+                                                             "password" => "", // passowrd
+                                                             "oauthSignature" => "", // oauth signature
+                                                             "auth" => "basic", // use oauth or basic
+                                                             "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg", // path to key file
+                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
 );
 
-$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdate($LRConfig);
-if ($LR->checkNode()) {
-    if ($LR->checkNodeActive()) {
-        $LR->setIdFields(
-            array(
+// Create a new service (publish means we want to publish)
+
+$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdateRemove($LRConfig);
+$LR->setIdFields(
+    array(
             'curator' => "info@pgogywebstuff.com",
             'owner' => "info@pgogywebstuff.com",
             'signer' => "info@pgogywebstuff.com",
             'submitter_type' => "user",
             'submitter' => "info@pgogywebstuff.com"
             )
-        );
+);
     
         $LR->setResFields(
             array(
@@ -64,28 +64,19 @@ if ($LR->checkNode()) {
             'submission_TOS' => "Standard",
             )
         );
-    
+
         $LR->setResFields(
             array(
-            'resource_data' => htmlspecialchars_decode("I am some new data"),
-            'replaces' => array("61c31414c7414afc98ecddcb48a0b4d4"),
+            'resource_data' => "Content now deleted",
+            'replaces' => array("451bc310bfe644b08472b7fe9eb4de03"),
             )
         );
       
-        echo "<pre>";
-        print_r($LR);
-        die();
     
         $LR->createDocument();
         if ($LR->verifyUpdatedDocument()) {
             $LR->finaliseDocument();
-            $LR->UpdateService();
+            $LR->updateRemoveService();
+            echo "the response code is " . $LR->getStatusCode() . "<br />";
             echo "New ID is " . $LR->getNewID();
         }
-    
-    } else {
-        print_r($LR->getResponse());
-    }
-} else {
-    print_r($LR->getResponse());
-}

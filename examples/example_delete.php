@@ -17,25 +17,25 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
 
   //if($LR->checkNodeActive()){
 
-	// Set the id fields - can be done one parameter at a time
+    // Set the id fields - can be done one parameter at a time
 
     // Identity fields MUST match original or the Delete/Replace will fail.
     $LR->setIdFields(
-      array(
+        array(
         'owner' => "Joe Hobson",
         'submitter_type' => "user",
         'submitter' => "barry white <joe@navigationnorth.com>"
-      )
+        )
     );
 
-	// Set the resource fields - can be done one parameter at a time
+    // Set the resource fields - can be done one parameter at a time
 
     $LR->setResFields(
-      array(
+        array(
         'replaces' => array('622e42a22dc34f19adef825c55628495'),
         //'resource_locator' => "", //url goes here
         'resource_data_type' => 'metadata',
-        'active' => TRUE,
+        'active' => true,
         //'submitter_timestamp' => "",
         //'submitter_TTL' => "",
         //'resource_TTL' => "",
@@ -48,31 +48,30 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
         'payload_schema' => array('DC 1.1'),
         'resource_data' => '',
         //'keys' => array() // add keys here
-      )
+        )
     );
 
     $LR->setTosFields(
-      array(
+        array(
         //'tos_submission_attribution' => "",
         'submission_TOS' => "http://learningregistry.org/tos",
-      )
+        )
     );
 
-	// Turn the arrays above into a document
+    // Turn the arrays above into a document
     $LR->createDocument();
 
-	// Verify the document is ok (optional)
+    // Verify the document is ok (optional)
 
-    if($LR->verifyDocument()){
+    if ($LR->verifyDocument()) {
+      // make the document into LR format and ready
 
-	  // make the document into LR format and ready
+        $LR->finaliseDocument();
 
-	  $LR->finaliseDocument();
+      // send the document
 
-	  // send the document
-
-	  $LR->PublishService();
-	  print_r($LR->getResponse());
+        $LR->PublishService();
+        print_r($LR->getResponse());
     }
 
 //  }

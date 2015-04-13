@@ -19,58 +19,27 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
 
 // Create a new service (publish means we want to publish)
 
-$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRConfig);
-$LRDocument = new LearningRegistry\LearningRegistryDocuments\LearningRegistryDCMetadata($LR);
-$LRDocument->create();
+$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdateRemove($LRConfig);
+$LRDocument = new LearningRegistry\LearningRegistryDocuments\LearningRegistryReplaceDocument(array("sandbox.learningregistry.org", "61c31414c7414afc98ecddcb48a0b4d4"));
+$LRDocument->emptyDocument($LR);
+$LRDocument->newResourceData($LR, htmlspecialchars_decode("I am some data"));
 
-$LRDocument->setIdFields(
-    array(
-    'curator' => "info@pgogywebstuff.com",
-    'owner' => "info@pgogywebstuff.com",
-    'signer' => "info@pgogywebstuff.com",
-    'submitter_type' => "user",
-    'submitter' => "info@pgogywebstuff.com"
-    )
-);
-
-$LRDocument->setSigFields(
-    array(
-    'signature'  => "", // mostly set later if signing needed - here now for reference
-    'key_server'  => "",
-    'key_location'  => "",
-    'key_owner'  => "",
-    'signing_method'  => "",
-    )
-);
-    
-$LRDocument->setResFields(
-    array(
-    'resource_locator' => "www.wibble.com", //url goes here
-    'keys' => array(), // add keys here
-    'resource_data' => htmlspecialchars_decode("I am some data"), // setting the resource data
-    )
-);
-      
-    
 // Turn the arrays above into a document
-$LR->createDocument();
-$LR->signDocument();
+    $LR->createDocument();
     
 // Verify the document is ok (optional)
-if ($LR->verifyDocument()) {
+if ($LR->verifyUpdatedDocument()) {
   // make the document into LR format and ready
     $LR->finaliseDocument();
       
   // send the document
       
-    echo "-------------<br />";
-    $LR->PublishService();
-    echo "-------------<br />";
+    $LR->updateRemoveService();
     echo "the response code is " . $LR->getStatusCode() . "<br />";
     echo "the OK is " . $LR->getOK() . "<br />";
     if ($LR->getOK()!="1") {
         echo "the Error is " . $LR->getError() . "<br />";
     } else {
-        echo "the doc ID is " . $LR->getDocID() . "<br />";
+        echo "New ID is " . $LR->getNewID();
     }
 }
