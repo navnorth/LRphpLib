@@ -24,6 +24,13 @@ class LearningRegistryPublish extends LearningRegistryDefault
         }
     }
     
+    public function unsetResFields($resData)
+    {
+        foreach ($resData as $key) {
+            unset($this->resFields[$key]);
+        }
+    }
+    
     public function setIdFields($idData)
     {
         foreach ($idData as $key => $value) {
@@ -74,28 +81,32 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $resourceData->identity = $identity;
       
         if ($this->getSigning()) {
-            foreach ($this->sigFields as $field => $value) {
+            if (count($this->sigFields)!=0) {
+                foreach ($this->sigFields as $field => $value) {
+                    if (is_array($value)) {
+                        $digital_signature->$field = $this->sigFields[$field];
+                    } else {
+                        if (trim($value)!="") {
+                            $digital_signature->$field = $this->sigFields[$field];
+                        }
+                    }
+                }
+                $resourceData->digital_signature = $digital_signature;
+            }
+        }
+      
+        if (count($this->tosFields)!=0) {
+            foreach ($this->tosFields as $field => $value) {
                 if (is_array($value)) {
-                    $digital_signature->$field = $this->sigFields[$field];
+                    $tos->$field = $this->tosFields[$field];
                 } else {
                     if (trim($value)!="") {
-                        $digital_signature->$field = $this->sigFields[$field];
+                        $tos->$field = $this->tosFields[$field];
                     }
                 }
             }
-            $resourceData->digital_signature = $digital_signature;
+            $resourceData->TOS = $tos;
         }
-      
-        foreach ($this->tosFields as $field => $value) {
-            if (is_array($value)) {
-                $tos->$field = $this->tosFields[$field];
-            } else {
-                if (trim($value)!="") {
-                    $tos->$field = $this->tosFields[$field];
-                }
-            }
-        }
-        $resourceData->TOS = $tos;
       
         if (count($this->resFields)!=0) {
             foreach ($this->resFields as $field => $value) {

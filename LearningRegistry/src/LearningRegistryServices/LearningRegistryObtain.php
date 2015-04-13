@@ -12,6 +12,12 @@ class LearningRegistryObtain extends LearningRegistryDefault
             print_r($document);
         }
     }
+    
+    public function getDocuments()
+    {
+        $data = json_decode($this->data->response);
+        return $data->documents;
+    }
   
     public function obtainService($parameters = null)
     {
@@ -55,8 +61,6 @@ class LearningRegistryObtain extends LearningRegistryDefault
         if (isset($parameters['resumption_token'])) {
             $url .= "&resumption_token=" . $parameters['resumption_token'];
         }
-    
-        echo $this->getNodeUrl() . "obtain" . $url . "<br />";
     
         $this->service($this->getNodeUrl(), "obtain" . $url, null, null, "GET");
       

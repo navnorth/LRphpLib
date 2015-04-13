@@ -9,6 +9,15 @@ class LearningRegistryUpdate extends LearningRegistryPublish
     {
       
         if ($this->verifyDocument()) {
+            if (isset($this->resourceData->payload_locator)) {
+                unset($this->resourceData->payload_locator);
+            }
+
+            if (!isset($this->resourceData->payload_placement)) {
+                trigger_error("payload placement not set");
+                return false;
+            }
+            
             if (!isset($this->resourceData->replaces)) {
                 trigger_error("replaces not set");
                 return false;

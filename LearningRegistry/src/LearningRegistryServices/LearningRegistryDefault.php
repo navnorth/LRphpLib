@@ -12,14 +12,38 @@ class LearningRegistryDefault
         $this->LearningRegistryConfig = $config;
     }
     
-	public function getMessage()
+    public function getMessage()
     {
         if (is_object(json_decode($this->data->response))) {
-			$data = json_decode($this->data->response);
+            $data = json_decode($this->data->response);
             return $data->message;
         }
     }
-	
+    
+    public function getOK()
+    {
+        if (is_object(json_decode($this->data->response))) {
+            $data = json_decode($this->data->response);
+            if (isset($data->document_results[0]->OK)) {
+                if (trim($data->document_results[0]->OK)!="") {
+                    return $data->document_results[0]->OK;
+                } elseif (isset($data->OK)) {
+                    if (isset($data->OK)) {
+                        return $data->OK;
+                    }
+                }
+            }
+        }
+    }
+    
+    public function getError()
+    {
+        if (is_object(json_decode($this->data->response))) {
+            $data = json_decode($this->data->response);
+            return $data->document_results[0]->error;
+        }
+    }
+    
     public function getStatusCode()
     {
         if (is_object(json_decode($this->data->response))) {
