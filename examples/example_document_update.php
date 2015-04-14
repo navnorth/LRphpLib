@@ -24,7 +24,7 @@ $LRDocument = new LearningRegistry\LearningRegistryDocuments\LearningRegistryDoc
 $LRDocument->populateDocument($LR);
 //Change the keys
 $LR->setResFields(array("keys" => array("good","great")));
-$LR->setResFields(array("replaces" => "04bf0cbb95f644078f16dc4b99f4e78a"));
+$LR->setResFields(array("replaces" => array("04bf0cbb95f644078f16dc4b99f4e78a")));
 $LR->setResFields(
     array(
         'resource_locator' => "www.wibble.com",
@@ -42,7 +42,7 @@ $LR->setResFields(
         'keys' => array("hello")
       )
 );
-    
+
     $LR->setSigFields(
         array(
         'signature'  => "",
@@ -52,32 +52,32 @@ $LR->setResFields(
         'signing_method'  => "",
         )
     );
-    
+
     $LR->setTosFields(
         array(
         //'tos_submission_attribution' => "",
         'submission_TOS' => "Standard",
         )
     );
-    
+
     $LR->setResFields(
         array(
             'resource_data' => htmlspecialchars_decode("I am some data"),
             'replaces' => array("25f43f6f8c764be9a92e216e33f8f16c"),
         )
     );
-        
+
 // Turn the arrays above into a document
     $LR->createDocument();
     $LR->signDocument();
-    
+
 // Verify the document is ok (optional)
     if ($LR->verifyUpdatedDocument()) {
       // make the document into LR format and ready
         $LR->finaliseDocument();
-      
+
       // send the document
-      
+
         $LR->UpdateService();
         echo "the response code is " . $LR->getStatusCode() . "<br />";
         echo "the OK is " . $LR->getOK() . "<br />";

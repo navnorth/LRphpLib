@@ -4,30 +4,30 @@
 
 class LearningRegistryDocument
 {
-  
+
     protected $LearningRegistryConfig;
     protected $document;
-      
+
     public function __construct($data)
     {
-       
+
         if (is_object($data)) {
             $this->LearningRegistryService = $data;
-        
+
             $this->LearningRegistryService->setResFields(
                 array(
                 'doc_type' => 'resource_data',
                 'doc_version' => '0.49.0'
                 )
             );
-        
+
         } elseif (is_array($data)) {
             $LRConfig = new \LearningRegistry\LearningRegistryConfig(
                 array( "url" => $data[0])
             );
-                                                         
+
             $LRObtain = new \LearningRegistry\LearningRegistryServices\LearningRegistryObtain($LRConfig);
-                                                             
+
             $LRObtain->ObtainService(
                 array(
                           "request_id" => $data[1],
@@ -36,11 +36,11 @@ class LearningRegistryDocument
             );
             $data = $LRObtain->getDocuments();
             $this->document = $data[0]->document[0];
-          
+
         }
-        
+
     }
-    
+
     public function populateDocument($LR)
     {
         foreach ($this->document as $field => $fieldValue) {
@@ -69,36 +69,38 @@ class LearningRegistryDocument
                     break;
                 case "identity": $LR->setIdFields($fieldValue);
                     break;
+                case "resource_data": $LR->setResFields(array($field => $fieldValue));
+                    break;
                 break;
             }
         }
     }
-    
+
     public function setIdFields($fieldsArray)
     {
-    
+
         $this->LearningRegistryService->setIdFields($fieldsArray);
-    
+
     }
-    
+
     public function setResFields($fieldsArray)
     {
-    
+
         $this->LearningRegistryService->setResFields($fieldsArray);
-    
+
     }
-    
+
     public function setSigFields($fieldsArray)
     {
-    
+
         $this->LearningRegistryService->setSigFields($fieldsArray);
-    
+
     }
-    
+
     public function setTosFields($fieldsArray)
     {
-    
+
         $this->LearningRegistryService->setTosFields($fieldsArray);
-    
+
     }
 }
