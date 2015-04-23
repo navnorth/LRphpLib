@@ -223,17 +223,26 @@ class LearningRegistryPublish extends LearningRegistryDefault
       
         $wkey = \OpenPGP\Message::parse(file_get_contents($this->getKeyPath()));
         $RSA = new \OpenPGP\Crypt\RSA($wkey);
-      
+        
         $wkey->packets[0]->key['d'] = $wkey->packets[0]->key['e'];
         $wkey->packets[0]->key['p'] = $wkey->packets[0]->key['e'];
         $wkey->packets[0]->key['q'] = $wkey->packets[0]->key['e'];
         $wkey->packets[0]->key['u'] = $wkey->packets[0]->key['e'];
-      
+ 
         $m = $RSA->sign($hashedDocument);
-      
+
+        $content = $m->to_bytes();
+
+        $util = new \OpenPGP\Util();
+        $headers = array(
+                        "Version" => "GnuPG v2"
+                    );
+
+        $message = $util->enarmor($content, "PGP SIGNATURE", $headers);
+
         $this->setSigFields(
             array(
-            'signature'  => $m[1]->data,
+            'signature'  => $message,
             'key_location'  => array($this->getPublicKeyPath()),
             'signing_method'  => "LR-PGP.1.0",
             )
