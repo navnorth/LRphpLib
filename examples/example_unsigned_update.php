@@ -5,15 +5,16 @@ require dirname(__FILE__) . "/../Psr4AutoloaderClass.php";
 
 $LRConfig = new LearningRegistry\LearningRegistryConfig(
     array(
-                                                             "url" => "sandbox.learningregistry.org",
-                                                             "username" => "info@pgogywebstuff.com",
-                                                             "https" => 1,
-                                                             "signing" => 0,
-                                                             "password" => "",
-                                                             "oauthSignature" => "",
-                                                             "auth" => "basic",
-                                                             "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg",
-                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt"
+                                                             "url" => "sandbox.learningregistry.org", //ul
+                                                             "username" => "info@pgogywebstuff.com", //username
+                                                             "https" => 1, //whether the use https
+                                                             "signing" => 1, //sign or not sign
+                                                             "password" => "", // passowrd
+                                                             "passphrase" => "", // passowrd
+                                                             "oauthSignature" => "", // oauth signature
+                                                             "auth" => "basic", // use oauth or basic
+                                                             "keyPath" => "C:/pat/privatekey.txt", // path to key file
+                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
 );
 
@@ -44,7 +45,7 @@ if ($LR->checkNode()) {
             'doc_version' => '0.49.0',
             'payload_placement' => 'inline',
             'payload_schema' => array('DC 1.1'),
-            'keys' => array("hello")
+            'keys' => array()
             )
         );
     
@@ -67,20 +68,18 @@ if ($LR->checkNode()) {
     
         $LR->setResFields(
             array(
-            'resource_data' => htmlspecialchars_decode("I am some new data"),
-            'replaces' => array("61c31414c7414afc98ecddcb48a0b4d4"),
+            'resource_data' => htmlspecialchars_decode("I am some data, and I am some moresdsdsdsdsd"),
+            'replaces' => array("74e40160c45847e494e93813c01e7ff1"),
             )
         );
-      
-        echo "<pre>";
-        print_r($LR);
-        die();
     
         $LR->createDocument();
+        $LR->signDocument();
         if ($LR->verifyUpdatedDocument()) {
+            echo "here";
             $LR->finaliseDocument();
             $LR->UpdateService();
-            echo "New ID is " . $LR->getNewID();
+            echo "New ID is " . $LR->getResponse();
         }
     
     } else {

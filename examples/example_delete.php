@@ -64,16 +64,16 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
     // Verify the document is ok (optional)
 
     if ($LR->verifyDocument()) {
-      // make the document into LR format and ready
+        // make the document into LR format and ready
 
         $LR->finaliseDocument();
 
-      // send the document
+        // send the document
 
         $LR->PublishService();
         print_r($LR->getResponse());
     }
 
-//  }
+    //  }
 
-//}
+    //}

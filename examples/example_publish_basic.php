@@ -9,7 +9,7 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "username" => "info@pgogywebstuff.com", //username
                                                              "https" => 1, //whether the use https
                                                              "signing" => 1, //sign or not sign
-                                                             "password" => "Fearher0!", // passowrd
+                                                             "password" => "", // passowrd
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
                                                              "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/pubring.gpg", // path to key file
@@ -91,17 +91,17 @@ $LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRC
     // Verify the document is ok (optional)
     
     if ($LR->verifyDocument()) {
-      // make the document into LR format and ready
+        // make the document into LR format and ready
     
         $LR->finaliseDocument();
       
-      // send the document
+        // send the document
       
         $LR->PublishService();
         echo "the response code is " . $LR->getStatusCode() . "<br />";
         echo "the doc ID is " . $LR->getDocID() . "<br />";
     }
     
-//  }
+    //  }
   
-//}
+    //}

@@ -29,10 +29,10 @@ $LRDocument->newResourceData($LR, htmlspecialchars_decode("I am some data"));
     
 // Verify the document is ok (optional)
 if ($LR->verifyUpdatedDocument()) {
-  // make the document into LR format and ready
+    // make the document into LR format and ready
     $LR->finaliseDocument();
       
-  // send the document
+    // send the document
       
     $LR->updateRemoveService();
     echo "the response code is " . $LR->getStatusCode() . "<br />";
