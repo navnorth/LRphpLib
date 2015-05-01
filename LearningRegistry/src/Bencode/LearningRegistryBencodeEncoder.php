@@ -2,19 +2,19 @@
 /**
  * Rych Bencode Component
  *
- * @package Rych\Bencode
- * @author Ryan Chouinard <rchouinard@gmail.com>
+ * @package   Rych\Bencode
+ * @author    Ryan Chouinard <rchouinard@gmail.com>
  * @copyright Copyright (c) 2014, Ryan Chouinard
- * @license MIT License - http://www.opensource.org/licenses/mit-license.php
+ * @license   MIT License - http://www.opensource.org/licenses/mit-license.php
  */
 
 /**
  * Bencode encoder
  *
- * @package Rych\Bencode
- * @author Ryan Chouinard <rchouinard@gmail.com>
+ * @package   Rych\Bencode
+ * @author    Ryan Chouinard <rchouinard@gmail.com>
  * @copyright Copyright (c) 2014, Ryan Chouinard
- * @license MIT License - http://www.opensource.org/licenses/mit-license.php
+ * @license   MIT License - http://www.opensource.org/licenses/mit-license.php
  */
  
 namespace LearningRegistry\Bencode;
@@ -30,7 +30,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Class constructor
      *
-     * @param mixed $data Entity to be encoded.
+     * @param  mixed $data Entity to be encoded.
      * @return void
      */
     public function __construct($data)
@@ -41,7 +41,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode a value into a bencode entity
      *
-     * @param mixed $data The value to be encoded.
+     * @param  mixed $data The value to be encoded.
      * @return string Returns the bencoded entity.
      */
     public static function encodeData($data)
@@ -61,7 +61,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode a value into a bencode entity
      *
-     * @param mixed $data The value to be encoded.
+     * @param  mixed $data The value to be encoded.
      * @return string Returns the bencoded entity.
      */
     private function encode($data = null)
@@ -83,7 +83,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode an integer into a bencode integer
      *
-     * @param integer $data The integer to be encoded.
+     * @param  integer $data The integer to be encoded.
      * @return string Returns the bencoded integer.
      */
     private function encodeInteger($data = null)
@@ -95,7 +95,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode a string into a bencode string
      *
-     * @param string $data The string to be encoded.
+     * @param  string $data The string to be encoded.
      * @return string Returns the bencoded string.
      */
     private function encodeString($data = null)
@@ -107,7 +107,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode a numeric array into a bencode list
      *
-     * @param array $data The numerically indexed array to be encoded.
+     * @param  array $data The numerically indexed array to be encoded.
      * @return string Returns the bencoded list.
      */
     private function encodeList(array $data = null)
@@ -125,7 +125,7 @@ class LearningRegistryBencodeEncoder
     /**
      * Encode an associative array into a bencode dictionary
      *
-     * @param array $data The associative array to be encoded.
+     * @param  array $data The associative array to be encoded.
      * @return string Returns the bencoded dictionary.
      */
     private function encodeDict(array $data = null)

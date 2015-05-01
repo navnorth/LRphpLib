@@ -16,16 +16,26 @@ use \OAuth\Common\Token\Exception\ExpiredTokenException;
 
 class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2\Service\ServiceInterface
 {
-    /** @const OAUTH_VERSION */
+    /**
+ * @const OAUTH_VERSION 
+*/
     const OAUTH_VERSION = 2;
-    /** @var array */
+    /**
+ * @var array 
+*/
     protected $scopes;
-    /** @var UriInterface|null */
+    /**
+ * @var UriInterface|null 
+*/
     protected $baseApiUri;
-    /** @var bool */
+    /**
+ * @var bool 
+*/
     protected $stateParameterInAuthUrl;
     
-    /** @var string */
+    /**
+ * @var string 
+*/
     protected $apiVersion;
     /**
      * @param CredentialsInterface  $credentials
@@ -33,7 +43,7 @@ class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2
      * @param TokenStorageInterface $storage
      * @param array                 $scopes
      * @param UriInterface|null     $baseApiUri
-     * @param bool $stateParameterInAutUrl
+     * @param bool                  $stateParameterInAutUrl
      * @param string                $apiVersion
      *
      * @throws InvalidScopeException
@@ -125,7 +135,7 @@ class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2
     /**
      * Validates the authorization state against a given one
      *
-     * @param string $state
+     * @param  string $state
      * @throws InvalidAuthorizationStateException
      */
     protected function validateAuthorizationState($state)
