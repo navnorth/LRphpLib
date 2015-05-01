@@ -44,6 +44,11 @@ class LearningRegistryConfig
         $this->password = $password;
     }
     
+    public function setPassPhrase($passphrase)
+ {
+        $this->passphrase = $passphrase;
+ }
+    
     public function setUsername($username)
     {
         $this->username = $username;
@@ -107,6 +112,14 @@ class LearningRegistryConfig
         return false;
     }
     
+    public function getPassPhrase()
+ {
+        if (isset($this->passphrase)) {
+            return $this->passphrase;
+           }
+        return false;
+ }
+    
     public function getUsername()
     {
         if (isset($this->username)) {
@@ -140,8 +153,9 @@ class LearningRegistryConfig
         if (is_array($config)) {
             return $this->processArray($config);
         } elseif (file_exists($config)) {
-            if (is_object(json_decode(file_get_contents($config))) ||
-            is_array(json_decode(file_get_contents($config)))) {
+            if (is_object(json_decode(file_get_contents($config))) 
+                || is_array(json_decode(file_get_contents($config)))
+            ) {
                 return $this->processJson(json_decode(file_get_contents($config)));
             } else {
                 return $this->processFile(file_get_contents($config));

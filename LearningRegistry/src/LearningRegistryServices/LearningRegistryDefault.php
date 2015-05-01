@@ -89,6 +89,11 @@ class LearningRegistryDefault
         return $this->LearningRegistryConfig->getpublicKeyPath();
     }
     
+    public function getPassPhrase()
+    {
+        return $this->LearningRegistryConfig->getPassPhrase();
+    }
+    
     public function getKeyPath()
     {
         return $this->LearningRegistryConfig->getKeyPath();
@@ -243,8 +248,10 @@ class LearningRegistryDefault
         
             $this->extraHeaders = array(
                 'Content-type' => 'application/json',
-                'Authorization' => 'OAuth ' . base64_encode('oauth_consumer_key=' . $this->getUsername()
-                                      . '&oauth_signature=' . $this->getOAuthSignature())
+                'Authorization' => 'OAuth ' . base64_encode(
+                    'oauth_consumer_key=' . $this->getUsername()
+                    . '&oauth_signature=' . $this->getOAuthSignature()
+                )
               );
               
             $this->data = $this->oauthRequest($method);

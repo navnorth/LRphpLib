@@ -219,26 +219,28 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
         $bencodedDocument = $bencoder->encodeData($jsonDocument);
-        $hashedDocument = hash('SHA256', $bencodedDocument);
+        $hashedDocument = hash('SHA256', $bencodedDocument);        
       
-        $wkey = \OpenPGP\Message::parse(file_get_contents($this->getKeyPath()));
-        $RSA = new \OpenPGP\Crypt\RSA($wkey);
-        
-        $wkey->packets[0]->key['d'] = $wkey->packets[0]->key['e'];
-        $wkey->packets[0]->key['p'] = $wkey->packets[0]->key['e'];
-        $wkey->packets[0]->key['q'] = $wkey->packets[0]->key['e'];
-        $wkey->packets[0]->key['u'] = $wkey->packets[0]->key['e'];
- 
-        $m = $RSA->sign($hashedDocument);
-
-        $content = $m->to_bytes();
-
+        $keyASCII = file_get_contents($this->getKeyPath());
+        $util = new \OpenPGP\Util();
+        $unarmor = $util->unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK');    
+        $keyEncrypted = \OpenPGP\Message::parse($unarmor);
+        foreach($keyEncrypted as $p) {
+            if(!($p instanceof \OpenPGP\Packets\SecretKeyPacket)) { continue; 
+            }
+            $key = \OpenPGP\Crypt\Symmetric::decryptSecretKey($this->getPassPhrase(), $p);
+            $rsa = new \OpenPGP\Crypt\RSA($key);
+            $m = $rsa->sign($hashedDocument);
+            $content = $m->to_bytes();
+        }
         $util = new \OpenPGP\Util();
         $headers = array(
                         "Version" => "GnuPG v2"
                     );
 
         $message = $util->enarmor($content, "PGP SIGNATURE", $headers);
+        
+        $message = "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n" . $hashedDocument . "\n" . $message;
 
         $this->setSigFields(
             array(
