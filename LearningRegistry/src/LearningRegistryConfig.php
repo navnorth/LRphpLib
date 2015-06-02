@@ -45,9 +45,9 @@ class LearningRegistryConfig
     }
     
     public function setPassPhrase($passphrase)
- {
+    {
         $this->passphrase = $passphrase;
- }
+    }
     
     public function setUsername($username)
     {
@@ -62,6 +62,11 @@ class LearningRegistryConfig
     public function setUrl($url)
     {
         $this->url = $url;
+    }
+    
+    public function setFingerprint($fingerprint)
+    {
+        $this->fingerprint = $fingerprint;
     }
     
     public function getPublicKeyPath()
@@ -113,12 +118,12 @@ class LearningRegistryConfig
     }
     
     public function getPassPhrase()
- {
+    {
         if (isset($this->passphrase)) {
             return $this->passphrase;
-           }
+        }
         return false;
- }
+    }
     
     public function getUsername()
     {
@@ -147,13 +152,21 @@ class LearningRegistryConfig
         return false;
     }
     
+    public function getFingerprint()
+    {
+        if (isset($this->fingerprint)) {
+            return $this->url;
+        }
+        return false;
+    }
+    
     public function __construct($config)
     {
     
         if (is_array($config)) {
             return $this->processArray($config);
         } elseif (file_exists($config)) {
-            if (is_object(json_decode(file_get_contents($config))) 
+            if (is_object(json_decode(file_get_contents($config)))
                 || is_array(json_decode(file_get_contents($config)))
             ) {
                 return $this->processJson(json_decode(file_get_contents($config)));
