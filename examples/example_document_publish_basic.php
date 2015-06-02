@@ -13,6 +13,7 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "passphrase" => "", // passphrase
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
+                                                             "fingerprint" => "",
                                                              "keyPath" => "C:/pat/privatekey.txt", // path to key file
                                                              "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
@@ -63,12 +64,6 @@ if ($LR->verifyDocument()) {
     $LR->finaliseDocument();
       
     // send the document
-      
-    echo "<br />";  
-    echo "<br />";  
-    echo "<br />";  
-    echo "<br />";  
-    
 
       
     $LR->PublishService();
