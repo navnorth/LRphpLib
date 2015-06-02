@@ -128,6 +128,11 @@ class LearningRegistryDefault
     {
         return $this->LearningRegistryConfig->getUsername();
     }
+    
+    public function getFingerprint()
+    {
+        return $this->LearningRegistryConfig->getFingerprint();
+    }
         
     public function oauthRequest($method)
     {

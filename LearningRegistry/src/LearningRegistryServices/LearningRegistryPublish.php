@@ -219,20 +219,46 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
         $bencodedDocument = $bencoder->encodeData($jsonDocument);
-        $hashedDocument = hash('SHA256', $bencodedDocument);        
+        $hashedDocument = hash('SHA256', $bencodedDocument);
       
         $keyASCII = file_get_contents($this->getKeyPath());
         $util = new \OpenPGP\Util();
-        $unarmor = $util->unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK');    
+        $unarmor = $util->unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK');
         $keyEncrypted = \OpenPGP\Message::parse($unarmor);
-        foreach($keyEncrypted as $p) {
-            if(!($p instanceof \OpenPGP\Packets\SecretKeyPacket)) { continue; 
+        
+        $keys = 0;
+        
+        foreach ($keyEncrypted as $p) {
+            if (get_class($p) == "OpenPGP\Packets\SecretKeyPacket") {
+                $keys++;
             }
-            $key = \OpenPGP\Crypt\Symmetric::decryptSecretKey($this->getPassPhrase(), $p);
-            $rsa = new \OpenPGP\Crypt\RSA($key);
-            $m = $rsa->sign($hashedDocument);
-            $content = $m->to_bytes();
+            
         }
+        
+        if ($keys !=1) {
+            if (!$this->getFingerprint()) {
+                trigger_error("fingerprint not set and multiple keys");
+            }
+        }
+        
+        foreach ($keyEncrypted as $p) {
+            if (!($p instanceof \OpenPGP\Packets\SecretKeyPacket)) {
+                continue;
+            }
+            
+            $key = \OpenPGP\Crypt\Symmetric::decryptSecretKey($this->getPassPhrase(), $p);
+            
+            if (($this->getFingerprint() == $key->fingerprint) && ($keys == 1)) {
+                $rsa = new \OpenPGP\Crypt\RSA($key);
+                $m = $rsa->sign($hashedDocument);
+                $content = $m->to_bytes();
+            } else {
+                $rsa = new \OpenPGP\Crypt\RSA($key);
+                $m = $rsa->sign($hashedDocument);
+                $content = $m->to_bytes();
+            }
+        }
+        
         $util = new \OpenPGP\Util();
         $headers = array(
                         "Version" => "GnuPG v2"
