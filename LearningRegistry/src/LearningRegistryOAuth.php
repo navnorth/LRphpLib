@@ -17,24 +17,24 @@ use \OAuth\Common\Token\Exception\ExpiredTokenException;
 class LearningRegistryOAuth extends BaseAbstractService implements \OAuth\OAuth2\Service\ServiceInterface
 {
     /**
- * @const OAUTH_VERSION 
+ * @const OAUTH_VERSION
 */
     const OAUTH_VERSION = 2;
     /**
- * @var array 
+ * @var array
 */
     protected $scopes;
     /**
- * @var UriInterface|null 
+ * @var UriInterface|null
 */
     protected $baseApiUri;
     /**
- * @var bool 
+ * @var bool
 */
     protected $stateParameterInAuthUrl;
     
     /**
- * @var string 
+ * @var string
 */
     protected $apiVersion;
     /**
