@@ -1,6 +1,6 @@
 <?PHP
 
-  namespace LearningRegistry\LearningRegistryServices;
+namespace LearningRegistry\LearningRegistryServices;
   
 class LearningRegistryPublish extends LearningRegistryDefault
 {
@@ -219,55 +219,40 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
         $bencodedDocument = $bencoder->encodeData($jsonDocument);
-        $hashedDocument = hash('SHA256', $bencodedDocument);
-      
+        $hashedDocument = hash('SHA1', $bencodedDocument);
+        
+        global $loader;
+        spl_autoload_unregister(array($loader, 'loadClass'));
+        
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
+        
         $keyASCII = file_get_contents($this->getKeyPath());
-        $util = new \OpenPGP\Util();
-        $unarmor = $util->unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK');
-        $keyEncrypted = \OpenPGP\Message::parse($unarmor);
-        
-        $keys = 0;
-        
+
+        $keyEncrypted = \OpenPGP_Message::parse(\OpenPGP::unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK'));
+
         foreach ($keyEncrypted as $p) {
-            if (get_class($p) == "OpenPGP\Packets\SecretKeyPacket") {
-                $keys++;
-            }
-            
-        }
-        
-        if ($keys !=1) {
-            if (!$this->getFingerprint()) {
-                trigger_error("fingerprint not set and multiple keys");
-            }
-        }
-        
-        foreach ($keyEncrypted as $p) {
-            if (!($p instanceof \OpenPGP\Packets\SecretKeyPacket)) {
+            if (!($p instanceof \OpenPGP_SecretKeyPacket)) {
                 continue;
             }
-            
-            $key = \OpenPGP\Crypt\Symmetric::decryptSecretKey($this->getPassPhrase(), $p);
-            
-            if (($this->getFingerprint() == $key->fingerprint) && ($keys == 1)) {
-                $rsa = new \OpenPGP\Crypt\RSA($key);
-                $m = $rsa->sign($hashedDocument);
-                $content = $m->to_bytes();
-            } else {
-                $rsa = new \OpenPGP\Crypt\RSA($key);
-                $m = $rsa->sign($hashedDocument);
-                $content = $m->to_bytes();
-            }
+            $key = \OpenPGP_Crypt_Symmetric::decryptSecretKey($this->getPassPhrase(), $p);
         }
-        
-        $util = new \OpenPGP\Util();
-        $headers = array(
-                        "Version" => "GnuPG v2"
-                    );
 
-        $message = $util->enarmor($content, "PGP SIGNATURE", $headers);
+        $data = new \OpenPGP_LiteralDataPacket($hashedDocument, array('format' => 'u'));
+        $sign = new \OpenPGP_Crypt_RSA($key);
+        $m = $sign->sign($data);
+        $packets = $m->signatures()[0];
+        $message = "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA256\n\n";
+        $message .= $packets[0]->data ."\n";
+        $message .= "-----BEGIN PGP SIGNATURE-----\n\n";
+        $signed_data = str_replace("-----BEGIN -----", "", str_replace("-----END -----", "", \OpenPGP::enarmor($packets[1][0]->to_bytes(), "")));
+        $signature = str_split(trim($signed_data), 65);
+        foreach ($signature as $line) {
+            $message .= $line . "\n";
+        }
+        $message .= "-----END PGP SIGNATURE-----";
         
-        $message = "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n" . $hashedDocument . "\n" . $message;
-
         $this->setSigFields(
             array(
             'signature'  => $message,
@@ -275,6 +260,8 @@ class LearningRegistryPublish extends LearningRegistryDefault
             'signing_method'  => "LR-PGP.1.0",
             )
         );
+      
+        spl_autoload_register(array($loader, 'loadClass'));
       
         $this->document = $this->createDocument();
       
