@@ -9,19 +9,17 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "username" => "info@pgogywebstuff.com", //username
                                                              "https" => 1, //whether the use https
                                                              "signing" => 1, //sign or not sign
-                                                             "password" => "Fearher0!", // password
-                                                             "passphrase" => "Fearher0!", // passphrase
+                                                             "password" => "Fearher0!", // passowrd
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
-                                                             //"fingerprint" => "CB9199E9F378EB8F733344C251CB8D313BB20B39",
-                                                             "keyPath" => "C:/pat/rsa.key", // path to key file
+                                                             "keyPath" => "c:/users/Pat/AppData/Roaming/gnupg/secring.gpg", // path to key file
                                                              "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
 );
 
 // Create a new service (publish means we want to publish)
 
-$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryPublish($LRConfig);
+$LR = new LearningRegistry\LearningRegistryServices\LearningRegistryUpdate($LRConfig);
 $LRDocument = new LearningRegistry\LearningRegistryDocuments\LearningRegistryDCMetadata($LR);
 $LRDocument->create();
 
@@ -49,8 +47,15 @@ $LRDocument->setResFields(
     array(
     'resource_locator' => "www.wibble.com", //url goes here
     'keys' => array(), // add keys here
-    'resource_data' => htmlspecialchars_decode("DATA!!!!!"), // setting the resource data
+    'resource_data' => htmlspecialchars_decode("I am some data, and I am some moresdsdsdsdsd"), // setting the resource data
     )
+);
+
+$LR->setResFields(
+    array(
+            'resource_data' => htmlspecialchars_decode("-"),
+            'replaces' => array("617518ab513d41b2b8b2bb16f98df8a7"),
+            )
 );
       
     
@@ -64,12 +69,15 @@ if ($LR->verifyDocument()) {
     $LR->finaliseDocument();
       
     // send the document
-
       
-    $LR->PublishService();
+    echo "<br />";
+    echo "<br />";
+    echo "<br />";
+    echo "<br />";
+      
+    $LR->UpdateService();
     echo "the response code is " . $LR->getStatusCode() . "<br />";
     echo "the OK is " . $LR->getOK() . "<br />";
-    print_r($LR->getResponse());
     if ($LR->getOK()!="1") {
         echo "the Error is " . $LR->getError() . "<br />";
     } else {
