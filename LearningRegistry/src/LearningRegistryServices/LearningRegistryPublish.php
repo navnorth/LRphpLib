@@ -194,14 +194,19 @@ class LearningRegistryPublish extends LearningRegistryDefault
     
         foreach ($this->resourceData as $term => $value) {
             if ($value == true) {
-                $value == "true";
+                $value = "true";
             }
             if ($value == false) {
-                $value == "false";
+                $value = "false";
             }
             if ($value == null) {
-                $value == "null";
+                $value = "null";
             }
+			if (is_object($term)) {
+			    if ($value == null) {
+					$value = "null";
+				}
+			}
             if ($term != "digital_signature") {
                 $document->{$term} = $value;
             }
@@ -219,8 +224,8 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
         $bencodedDocument = $bencoder->encodeData($jsonDocument);
-        $hashedDocument = hash('SHA1', $bencodedDocument);
-        
+		$hashedDocument = hash('SHA1', $bencodedDocument);
+
         global $loader;
         spl_autoload_unregister(array($loader, 'loadClass'));
         
