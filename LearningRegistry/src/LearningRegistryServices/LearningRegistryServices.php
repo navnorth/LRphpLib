@@ -16,7 +16,6 @@ class LearningRegistryServices extends LearningRegistryDefault
                 $this->services[] = $service->service_name;
             }
         }
-        print_r($this->services);
     
     }
     
