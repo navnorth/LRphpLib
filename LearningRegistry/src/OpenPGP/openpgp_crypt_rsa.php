@@ -13,9 +13,9 @@ class OpenPGP_Crypt_RSA
 {
     protected $key, $message;
 
-  // Construct a wrapper object from a key or a message packet
+    // Construct a wrapper object from a key or a message packet
     function __construct($packet)
-    {
+  {
   
         if (!is_object($packet)) {
             $packet = OpenPGP_Message::parse($packet);
@@ -43,22 +43,22 @@ class OpenPGP_Crypt_RSA
         return $this->key;
     }
 
-  // Get Crypt_RSA for the public key
+    // Get Crypt_RSA for the public key
     function public_key($keyid = null)
-  {
+    {
         return self::convert_public_key($this->key($keyid));
     }
 
-  // Get Crypt_RSA for the private key
+    // Get Crypt_RSA for the private key
     function private_key($keyid = null)
-  {
+    {
         return self::convert_private_key($this->key($keyid));
     }
 
-  // Pass a message to verify with this key, or a key (OpenPGP or Crypt_RSA) to check this message with
-  // Second optional parameter to specify which signature to verify (if there is more than one)
+    // Pass a message to verify with this key, or a key (OpenPGP or Crypt_RSA) to check this message with
+    // Second optional parameter to specify which signature to verify (if there is more than one)
     function verify($packet)
-    {
+  {
         $self = $this; // For old PHP
         if (!is_object($packet)) {
             $packet = OpenPGP_Message::parse($packet);
@@ -91,21 +91,23 @@ class OpenPGP_Crypt_RSA
             };
         }
 
-        return $m->verified_signatures(array('RSA' => array(
-        'MD5'    => $verifier,
-        'SHA1'   => $verifier,
-        'SHA224' => $verifier,
-        'SHA256' => $verifier,
-        'SHA384' => $verifier,
-        'SHA512' => $verifier
-        )));
+        return $m->verified_signatures(
+            array('RSA' => array(
+            'MD5'    => $verifier,
+            'SHA1'   => $verifier,
+            'SHA224' => $verifier,
+            'SHA256' => $verifier,
+            'SHA384' => $verifier,
+            'SHA512' => $verifier
+            ))
+        );
     }
 
-  // Pass a message to sign with this key, or a secret key to sign this message with
-  // Second parameter is hash algorithm to use (default SHA256)
-  // Third parameter is the 16-digit key ID to use... defaults to the key id in the key packet
+    // Pass a message to sign with this key, or a secret key to sign this message with
+    // Second parameter is hash algorithm to use (default SHA256)
+    // Third parameter is the 16-digit key ID to use... defaults to the key id in the key packet
     function sign($packet, $hash = 'SHA256', $keyid = null)
-  {
+    {
         if (!is_object($packet)) {
             if ($this->key) {
                 $packet = new OpenPGP_LiteralDataPacket($packet);
@@ -115,7 +117,8 @@ class OpenPGP_Crypt_RSA
         }
 
         if ($packet instanceof OpenPGP_SecretKeyPacket || $packet instanceof Crypt_RSA
-         || ($packet instanceof ArrayAccess && $packet[0] instanceof OpenPGP_SecretKeyPacket)) {
+            || ($packet instanceof ArrayAccess && $packet[0] instanceof OpenPGP_SecretKeyPacket)
+        ) {
             $key = $packet;
             $message = $this->message;
         } else {
@@ -142,18 +145,22 @@ class OpenPGP_Crypt_RSA
 
         $sig = new OpenPGP_SignaturePacket($message, 'RSA', strtoupper($hash));
         $sig->hashed_subpackets[] = new OpenPGP_SignaturePacket_IssuerPacket($keyid);
-        $sig->sign_data(array('RSA' => array($hash => function ($data) use ($key) {
-            return array($key->sign($data));
+        $sig->sign_data(
+            array('RSA' => array($hash => function ($data) use ($key) {
+                return array($key->sign($data));
 
-        })));
+            }))
+        );
 
         return new OpenPGP_Message(array($sig, $message));
     }
 
-  /** Pass a message with a key and userid packet to sign */
-  // TODO: merge this with the normal sign function
+    /**
+ * Pass a message with a key and userid packet to sign 
+*/
+    // TODO: merge this with the normal sign function
     function sign_key_userid($packet, $hash = 'SHA256', $keyid = null)
-  {
+    {
         if (is_array($packet)) {
             $packet = new OpenPGP_Message($packet);
         } elseif (!is_object($packet)) {
@@ -183,10 +190,12 @@ class OpenPGP_Crypt_RSA
             $packet[] = $sig;
         }
 
-        $sig->sign_data(array('RSA' => array($hash => function ($data) use ($key) {
-            return array($key->sign($data));
+        $sig->sign_data(
+            array('RSA' => array($hash => function ($data) use ($key) {
+                return array($key->sign($data));
 
-        })));
+            }))
+        );
 
         return $packet;
     }
@@ -198,7 +207,8 @@ class OpenPGP_Crypt_RSA
         }
 
         if ($packet instanceof OpenPGP_SecretKeyPacket || $packet instanceof Crypt_RSA
-         || ($packet instanceof ArrayAccess && $packet[0] instanceof OpenPGP_SecretKeyPacket)) {
+            || ($packet instanceof ArrayAccess && $packet[0] instanceof OpenPGP_SecretKeyPacket)
+        ) {
             $keys = $packet;
             $message = $this->message;
         } else {
