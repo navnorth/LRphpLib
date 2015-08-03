@@ -126,38 +126,47 @@ class LearningRegistryPublish extends LearningRegistryDefault
     
     public function verifyDocument($tos = false)
     {
-      
+
+        $this->errors = array();
+        
         if (!isset($this->resourceData->identity->submitter)) {
+            array_push($this->errors, "submitter not set"); 
             trigger_error("submitter not set");
             return false;
         }
       
         if (!isset($this->resourceData->identity->submitter_type)) {
+            array_push($this->errors, "submitter type not set");
             trigger_error("submitter type not set");
             return false;
         }
       
         if (!isset($this->resourceData->TOS->submission_TOS)) {
+            array_push($this->errors, "submission TOS not set");
             trigger_error("submission TOS not set");
             return false;
         }
       
         if (!isset($this->resourceData->doc_type)) {
+            array_push($this->errors, "doc type not set");
             trigger_error("doc type not set");
             return false;
         }
       
         if (!isset($this->resourceData->resource_data_type)) {
+            array_push($this->errors, "resource data type not set");
             trigger_error("resource data type not set");
             return false;
         }
       
         if (!isset($this->resourceData->active)) {
+            array_push($this->errors, "active not set");
             trigger_error("active not set");
             return false;
         }
       
         if (!isset($this->resourceData->doc_version)) {
+            array_push($this->errors, "doc version not set");
             trigger_error("doc version not set");
             return false;
         }
@@ -165,6 +174,7 @@ class LearningRegistryPublish extends LearningRegistryDefault
         if (isset($this->resourceData->payload_placement)) {
             if ($this->resourceData->payload_placement == "inline") {
                 if (!isset($this->resourceData->resource_data)) {
+                    array_push($this->errors, "resource data not set");
                     trigger_error("resource data not set");
                     return false;
                 }
@@ -173,12 +183,14 @@ class LearningRegistryPublish extends LearningRegistryDefault
       
         if ($tos) {
             if (!isset($this->TOS->submission_TOS)) {
+                array_push($this->errors, "doc version not set");
                 trigger_error("doc version not set");
                 return false;
             }
         }
       
         if (!isset($this->resourceData->payload_schema)) {
+            array_push($this->errors, "payload schema not set");
             trigger_error("payload schema not set");
             return false;
         }
@@ -202,11 +214,11 @@ class LearningRegistryPublish extends LearningRegistryDefault
             if ($value == null) {
                 $value = "null";
             }
-			if (is_object($term)) {
-			    if ($value == null) {
-					$value = "null";
-				}
-			}
+            if (is_object($term)) {
+                if ($value == null) {
+                    $value = "null";
+                }
+            }
             if ($term != "digital_signature") {
                 $document->{$term} = $value;
             }
@@ -224,14 +236,14 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $jsonDocument = json_encode($document);
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
         $bencodedDocument = $bencoder->encodeData($jsonDocument);
-		$hashedDocument = hash('SHA1', $bencodedDocument);
+        $hashedDocument = hash('SHA1', $bencodedDocument);
 
         global $loader;
         spl_autoload_unregister(array($loader, 'loadClass'));
         
-        require_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
-        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
-        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
+        include_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
+        include_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
+        include_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
         
         $keyASCII = file_get_contents($this->getKeyPath());
 
