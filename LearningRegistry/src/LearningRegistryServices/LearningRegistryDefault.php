@@ -41,6 +41,8 @@ class LearningRegistryDefault
         if (is_object(json_decode($this->data->response))) {
             $data = json_decode($this->data->response);
             return $data->document_results[0]->error;
+        }else{
+            return $this->data->response;
         }
     }
     
