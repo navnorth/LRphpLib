@@ -130,7 +130,7 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $this->errors = array();
         
         if (!isset($this->resourceData->identity->submitter)) {
-            array_push($this->errors, "submitter not set"); 
+            array_push($this->errors, "submitter not set");
             trigger_error("submitter not set");
             return false;
         }
@@ -241,9 +241,9 @@ class LearningRegistryPublish extends LearningRegistryDefault
         global $loader;
         spl_autoload_unregister(array($loader, 'loadClass'));
         
-        include_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
-        include_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
-        include_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
+        require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
         
         $keyASCII = file_get_contents($this->getKeyPath());
 

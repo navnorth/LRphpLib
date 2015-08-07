@@ -10,7 +10,7 @@ class LearningRegistryReplaceDocument extends LearningRegistryDocument
     protected $id;
       
     public function __construct($data)
-    {       
+    {
         if (is_array($data)) {
             $LRConfig = new \LearningRegistry\LearningRegistryConfig(
                 array( "url" => $data[0])
@@ -37,33 +37,33 @@ class LearningRegistryReplaceDocument extends LearningRegistryDocument
     
         foreach ($this->document as $field => $fieldValue) {
             switch($field){
-            case "doc_type": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "active": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "resource_locator": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "keys": $LR->setResFields(array("keys" => ""));
-                break;
-            case "TOS": $LR->setTosFields($fieldValue);
-                break;
-            case "digital_signature": foreach ($fieldValue as $id => $value) {
-                      $fieldValue->{$id} = "";
-            }
-            $LR->setSigFields($fieldValue);
-                break;
-            case "resource_data_type": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_locator": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_placement": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_schema": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "doc_version": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "identity": $LR->setIdFields($fieldValue);
-                break;
+                case "doc_type": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "active": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "resource_locator": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "keys": $LR->setResFields(array("keys" => ""));
+                    break;
+                case "TOS": $LR->setTosFields($fieldValue);
+                    break;
+                case "digital_signature": foreach ($fieldValue as $id => $value) {
+                          $fieldValue->{$id} = "";
+                }
+                $LR->setSigFields($fieldValue);
+                    break;
+                case "resource_data_type": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_locator": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_placement": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_schema": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "doc_version": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "identity": $LR->setIdFields($fieldValue);
+                    break;
                 break;
             }
         }
@@ -74,5 +74,4 @@ class LearningRegistryReplaceDocument extends LearningRegistryDocument
     {
         $LR->setResFields(array("resource_data" => $resourceData));
     }
-    
 }

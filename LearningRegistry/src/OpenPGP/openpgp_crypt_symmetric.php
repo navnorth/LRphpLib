@@ -174,36 +174,36 @@ class OpenPGP_Crypt_Symmetric
     {
         $cipher = null;
         switch($algo) {
-        case 2:
-            if (class_exists('Crypt_TripleDES')) {
-                $cipher = new Crypt_TripleDES(CRYPT_DES_MODE_CFB);
-                $key_bytes = 24;
-                $key_block_bytes = 8;
-            }
-            break;
-        case 3:
-            if (defined('MCRYPT_CAST_128')) {
-                $cipher = new MCryptWrapper(MCRYPT_CAST_128);
-            }
-            break;
-        case 7:
-            if (class_exists('Crypt_AES')) {
-                $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
-                $cipher->setKeyLength(128);
-            }
-            break;
-        case 8:
-            if (class_exists('Crypt_AES')) {
-                $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
-                $cipher->setKeyLength(192);
-            }
-            break;
-        case 9:
-            if (class_exists('Crypt_AES')) {
-                $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
-                $cipher->setKeyLength(256);
-            }
-            break;
+            case 2:
+                if (class_exists('Crypt_TripleDES')) {
+                    $cipher = new Crypt_TripleDES(CRYPT_DES_MODE_CFB);
+                    $key_bytes = 24;
+                    $key_block_bytes = 8;
+                }
+                break;
+            case 3:
+                if (defined('MCRYPT_CAST_128')) {
+                    $cipher = new MCryptWrapper(MCRYPT_CAST_128);
+                }
+                break;
+            case 7:
+                if (class_exists('Crypt_AES')) {
+                    $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
+                    $cipher->setKeyLength(128);
+                }
+                break;
+            case 8:
+                if (class_exists('Crypt_AES')) {
+                    $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
+                    $cipher->setKeyLength(192);
+                }
+                break;
+            case 9:
+                if (class_exists('Crypt_AES')) {
+                    $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
+                    $cipher->setKeyLength(256);
+                }
+                break;
         }
         if (!$cipher) {
             return array(null, null, null); // Unsupported cipher

@@ -45,30 +45,30 @@ class LearningRegistryDocument
     {
         foreach ($this->document as $field => $fieldValue) {
             switch($field){
-            case "doc_type": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "active": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "resource_locator": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "keys": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "TOS": $LR->setTosFields($fieldValue);
-                break;
-            case "digital_signature": $LR->setSigFields($fieldValue);
-                break;
-            case "resource_data_type": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_locator": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_placement": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "payload_schema": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "doc_version": $LR->setResFields(array($field => $fieldValue));
-                break;
-            case "identity": $LR->setIdFields($fieldValue);
-                break;
+                case "doc_type": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "active": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "resource_locator": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "keys": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "TOS": $LR->setTosFields($fieldValue);
+                    break;
+                case "digital_signature": $LR->setSigFields($fieldValue);
+                    break;
+                case "resource_data_type": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_locator": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_placement": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "payload_schema": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "doc_version": $LR->setResFields(array($field => $fieldValue));
+                    break;
+                case "identity": $LR->setIdFields($fieldValue);
+                    break;
                 break;
             }
         }
@@ -103,10 +103,9 @@ class LearningRegistryDocument
     }
     
     public function getDocument()
- {
+    {
     
         return $this->document;
     
- }
-    
+    }
 }

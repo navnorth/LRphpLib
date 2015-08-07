@@ -15,7 +15,7 @@ class OpenPGP_Crypt_RSA
 
     // Construct a wrapper object from a key or a message packet
     function __construct($packet)
-  {
+    {
   
         if (!is_object($packet)) {
             $packet = OpenPGP_Message::parse($packet);
@@ -58,7 +58,7 @@ class OpenPGP_Crypt_RSA
     // Pass a message to verify with this key, or a key (OpenPGP or Crypt_RSA) to check this message with
     // Second optional parameter to specify which signature to verify (if there is more than one)
     function verify($packet)
-  {
+    {
         $self = $this; // For old PHP
         if (!is_object($packet)) {
             $packet = OpenPGP_Message::parse($packet);
@@ -156,7 +156,7 @@ class OpenPGP_Crypt_RSA
     }
 
     /**
- * Pass a message with a key and userid packet to sign 
+ * Pass a message with a key and userid packet to sign
 */
     // TODO: merge this with the normal sign function
     function sign_key_userid($packet, $hash = 'SHA256', $keyid = null)
