@@ -4,14 +4,14 @@
 
 class LearningRegistryDefault
 {
-  
+
     protected $LearningRegistryConfig;
-      
+
     public function __construct($config)
     {
         $this->LearningRegistryConfig = $config;
     }
-    
+
     public function getMessage()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -19,7 +19,7 @@ class LearningRegistryDefault
             return $data->message;
         }
     }
-    
+
     public function getOK()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -35,7 +35,7 @@ class LearningRegistryDefault
             }
         }
     }
-    
+
     public function getError()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -45,7 +45,7 @@ class LearningRegistryDefault
             return $this->data->response;
         }
     }
-    
+
     public function getStatusCode()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -53,7 +53,7 @@ class LearningRegistryDefault
             return $data;
         }
     }
-    
+
     public function getResponse()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -62,7 +62,7 @@ class LearningRegistryDefault
             return json_encode(array("response" => $this->data->response));
         }
     }
-    
+
     public function checkNode()
     {
         $LR = new LearningRegistryStatus($this->LearningRegistryConfig);
@@ -73,7 +73,7 @@ class LearningRegistryDefault
         $this->data = $LR->data;
         return $LR->data->statusCode;
     }
-    
+
     public function checkNodeActive()
     {
         $LR = new LearningRegistryStatus($this->LearningRegistryConfig);
@@ -85,57 +85,62 @@ class LearningRegistryDefault
         $this->data = $LR->data;
         return false;
     }
-    
+
     public function getpublicKeyPath()
     {
         return $this->LearningRegistryConfig->getpublicKeyPath();
     }
-    
+
     public function getPassPhrase()
     {
         return $this->LearningRegistryConfig->getPassPhrase();
     }
-    
+
     public function getKeyPath()
     {
         return $this->LearningRegistryConfig->getKeyPath();
     }
-    
+
+    public function getKeyOwner()
+    {
+        return $this->LearningRegistryConfig->getKeyOwner();
+    }
+
     public function getSigning()
     {
         return $this->LearningRegistryConfig->getSigning();
     }
-    
+
     public function getOAuthSignature()
     {
         return $this->LearningRegistryConfig->getOAuthSignature();
     }
-    
+
     public function getAuthorization()
     {
         return $this->LearningRegistryConfig->getAuthorization();
     }
-    
+
     public function getNodeUrl()
     {
         return $this->LearningRegistryConfig->getProtocol() . "://" . $this->LearningRegistryConfig->getUrl();
     }
-    
+
     public function getPassword()
     {
         return $this->LearningRegistryConfig->getPassword();
     }
-    
+
     public function getUsername()
     {
         return $this->LearningRegistryConfig->getUsername();
     }
-    
+
     public function getFingerprint()
     {
         return $this->LearningRegistryConfig->getFingerprint();
     }
-        
+
     public function oauthRequest($method)
     {
         return $this->LROAuth->request(
@@ -145,10 +150,10 @@ class LearningRegistryDefault
             $this->extraHeaders
         );
     }
-    
+
     public function getUrl($method)
     {
-    
+
         $client = new \GuzzleHttp\Client();
         if ($method == "POST") {
             try {
@@ -216,33 +221,33 @@ class LearningRegistryDefault
             }
         }
     }
-    
+
     public function basicRequest($method)
     {
         return $this->getUrl($method);
     }
-    
+
     public function noAuthRequest($method)
     {
         return $this->getUrl($method);
     }
-    
+
     public function service($url, $service, $auth = null, $document = null, $method = "GET")
     {
-      
+
         $this->interface = new \LearningRegistry\Http\LearningRegistryUri();
         $this->interface->setHost($url);
         $this->interface->setPath($service);
         $this->document = $document;
-      
+
         if ($auth == "basic") {
             $this->extraHeaders = array(
                 'Content-type' => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode($this->getUsername() . ':' . $this->getPassword())
               );
-              
+
             $this->data = $this->basicRequest($method);
-      
+
         } elseif ($auth == "oauth") {
             $storage = new \OAuth\Common\Storage\Session();
             $credentials = new \OAuth\Common\Consumer\Credentials(null, null, null);
@@ -252,7 +257,7 @@ class LearningRegistryDefault
                 $httpClient,
                 $storage
             );
-        
+
             $this->extraHeaders = array(
                 'Content-type' => 'application/json',
                 'Authorization' => 'OAuth ' . base64_encode(
@@ -260,13 +265,13 @@ class LearningRegistryDefault
                     . '&oauth_signature=' . $this->getOAuthSignature()
                 )
               );
-              
+
             $this->data = $this->oauthRequest($method);
-        
+
         } else {
             $this->data = $this->noAuthRequest($method);
-      
+
         }
-      
+
     }
 }
