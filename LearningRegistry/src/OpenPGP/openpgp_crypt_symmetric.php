@@ -3,9 +3,9 @@
 require_once dirname(__FILE__).'/openpgp.php';
 @require_once dirname(__FILE__).'/openpgp_crypt_rsa.php';
 @require_once dirname(__FILE__).'/openpgp_mcrypt_wrapper.php';
-@require_once 'C:\xampp\htdocs\pgptest\vendor\phpseclib\phpseclib\phpseclib\Crypt\AES.php';
-@require_once 'C:\xampp\htdocs\pgptest\vendor\phpseclib\phpseclib\phpseclib\Crypt\TripleDES.php';
-require_once 'C:\xampp\htdocs\pgptest\vendor\phpseclib\phpseclib\phpseclib\Crypt\Random.php'; // part of phpseclib is absolutely required
+@include_once dirname(__FILE__).'/../../../vendor/phpseclib/phpseclib/phpseclib/Crypt/AES.php';
+@include_once dirname(__FILE__).'/../../../vendor/phpseclib/phpseclib/phpseclib/Crypt/TripleDES.php';
+require_once dirname(__FILE__).'/../../../vendor/phpseclib/phpseclib/phpseclib/Crypt/Random.php'; // part of phpseclib is absolutely required
 
 class OpenPGP_Crypt_Symmetric
 {
