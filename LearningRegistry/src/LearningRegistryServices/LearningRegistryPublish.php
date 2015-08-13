@@ -62,18 +62,18 @@ class LearningRegistryPublish extends LearningRegistryDefault
     public function createDocument()
     {
 
-        $identity = new \StdClass();
+        $identity = array();
         $digital_signature = new \StdClass();
-        $tos = new \StdClass();
+        $tos = array();
         $resourceData = new \StdClass();
 
         if (count($this->idFields)!=0) {
             foreach ($this->idFields as $field => $value) {
                 if (is_array($value)) {
-                    $identity->$field = $this->idFields[$field];
+                    $identity[$field] = $this->idFields[$field];
                 } else {
                     if (trim($value)!="") {
-                        $identity->$field = $this->idFields[$field];
+                        $identity[$field] = $this->idFields[$field];
                     }
                 }
             }
@@ -98,10 +98,10 @@ class LearningRegistryPublish extends LearningRegistryDefault
         if (count($this->tosFields)!=0) {
             foreach ($this->tosFields as $field => $value) {
                 if (is_array($value)) {
-                    $tos->$field = $this->tosFields[$field];
+                    $tos[$field] = $this->tosFields[$field];
                 } else {
                     if (trim($value)!="") {
-                        $tos->$field = $this->tosFields[$field];
+                        $tos[$field] = $this->tosFields[$field];
                     }
                 }
             }
@@ -129,19 +129,19 @@ class LearningRegistryPublish extends LearningRegistryDefault
 
         $this->errors = array();
 
-        if (!isset($this->resourceData->identity->submitter)) {
+        if (!isset($this->resourceData->identity['submitter'])) {
             array_push($this->errors, "submitter not set");
             trigger_error("submitter not set");
             return false;
         }
 
-        if (!isset($this->resourceData->identity->submitter_type)) {
+        if (!isset($this->resourceData->identity['submitter_type'])) {
             array_push($this->errors, "submitter type not set");
             trigger_error("submitter type not set");
             return false;
         }
 
-        if (!isset($this->resourceData->TOS->submission_TOS)) {
+        if (!isset($this->resourceData->TOS['submission_TOS'])) {
             array_push($this->errors, "submission TOS not set");
             trigger_error("submission TOS not set");
             return false;
@@ -182,7 +182,7 @@ class LearningRegistryPublish extends LearningRegistryDefault
         }
 
         if ($tos) {
-            if (!isset($this->TOS->submission_TOS)) {
+            if (!isset($this->TOS['submission_TOS'])) {
                 array_push($this->errors, "doc version not set");
                 trigger_error("doc version not set");
                 return false;
@@ -203,12 +203,12 @@ class LearningRegistryPublish extends LearningRegistryDefault
     {
         if (is_null($data)) {
             return "null";
-        } else if (is_numeric($data)) {
+        } elseif (is_numeric($data)) {
             return strval($data);
-        } else if (is_bool($data)) {
+        } elseif (is_bool($data)) {
             return $data ? "true" : "false";
-        } else if (is_array($data)) {
-            foreach($data as $subKey => $subValue) {
+        } elseif (is_array($data)) {
+            foreach ($data as $subKey => $subValue) {
                 $data[$subKey] = $this->normalizeData($subValue);
             }
         }
@@ -217,31 +217,10 @@ class LearningRegistryPublish extends LearningRegistryDefault
 
     public function signDocument()
     {
-        //echo "before signing and normalizing <br />". json_encode($this->resourceData) . "<br />";
-
         $document = new \StdClass();
 
         foreach ($this->resourceData as $term => $value) {
             $document->{$term} = $this->normalizeData($value);
-            /*
-            if ($value == true) {
-                $value = "true";
-            }
-            if ($value == false) {
-                $value = "false";
-            }
-            if ($value == null) {
-                $value = "null";
-            }
-            if (is_object($term)) {
-                if ($value == null) {
-                    $value = "null";
-                }
-            }
-            if ($term != "digital_signature") {
-                $document->{$term} = $value;
-            }
-            */
         }
 
         unset($document->digital_signature);
@@ -253,12 +232,11 @@ class LearningRegistryPublish extends LearningRegistryDefault
         unset($document->node_timestamp);
         unset($document->create_timestamp);
 
-        $jsonDocument = json_encode($document);
-
-        //echo "normalized after json_encode(doc) <br />" . $jsonDocument. "<br />";
-
-        $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoder($jsonDocument);
-        $bencodedDocument = $bencoder->encodeData($jsonDocument);
+        //$jsonDocument = json_encode($document);
+        
+        $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoderTrial();
+        $document = (array) $document;
+        $bencodedDocument = utf8_encode($bencoder->encode($document));
         $hashedDocument = hash('SHA256', $bencodedDocument);
 
         global $loader;
