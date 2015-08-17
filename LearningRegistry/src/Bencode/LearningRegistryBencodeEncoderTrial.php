@@ -37,9 +37,9 @@ class LearningRegistryBencodeEncoderTrial
                 break;
             case 'array':
                 if (!$this->is_associative($value)) {
-                $out.= 'l';
+                    $out.= 'l';
                     foreach ($value as $entry) {
-                    $out.= $this->encode($entry);
+                        $out.= $this->encode($entry);
                     }
                     $out.= 'e';
                 } else {
