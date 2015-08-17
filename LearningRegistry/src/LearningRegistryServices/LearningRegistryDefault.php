@@ -20,6 +20,21 @@ class LearningRegistryDefault
         }
     }
 
+	public function getDocumentOK()
+    {
+        if (is_object(json_decode($this->data->response))) {
+            $data = json_decode($this->data->response);
+            if (isset($data->document_results[0]->OK)) {
+                if (trim($data->document_results[0]->OK)!="") {
+                    return $data->document_results[0]->OK;
+                } 
+			}
+        }
+		
+		return false;
+		
+    }
+
     public function getOK()
     {
         if (is_object(json_decode($this->data->response))) {
@@ -139,6 +154,16 @@ class LearningRegistryDefault
     public function getFingerprint()
     {
         return $this->LearningRegistryConfig->getFingerprint();
+    }
+	
+	public function getLoader()
+    {
+        return $this->LearningRegistryConfig->getLoader();
+    }
+	
+	public function getKey()
+    {
+        return $this->LearningRegistryConfig->getKey();
     }
 
     public function oauthRequest($method)
