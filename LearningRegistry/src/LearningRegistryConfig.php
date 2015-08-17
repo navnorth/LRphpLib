@@ -15,15 +15,29 @@ class LearningRegistryConfig
     protected $keyPath;
     protected $keyOwner;
     protected $publicKeyPath;
+    protected $loader;
+    protected $keyContents;
+
+    public function setLoader($loader)
+    {
+        $this->loader = $loader;
+    }
 
     public function setKeyPath($keyPath)
     {
         $this->keyPath = $keyPath;
     }
+    
+    public function setKeyContents($keyContents)
+    {
+        $this->keyContents = $keyContents;
+    }
+    
     public function setKeyOwner($keyOwner)
     {
         $this->keyOwner = $keyOwner;
     }
+    
     public function setPublicKeyPath($publicKey)
     {
         $this->publicKeyPath = $publicKey;
@@ -79,6 +93,30 @@ class LearningRegistryConfig
         if (isset($this->publicKeyPath)) {
             return $this->publicKeyPath;
         }
+        return false;
+    }
+    
+    public function getKey()
+    {
+    
+        if (isset($this->keyContents)) {
+            return $this->keyContents;
+        }
+        
+        if (isset($this->keyPath)) {
+            return file_get_contents($this->keyPath);
+        }
+        
+        return false;
+    
+    }
+    
+    public function getKeyContents()
+    {
+        if (isset($this->keyContents)) {
+            return $this->getKeyContents;
+        }
+        
         return false;
     }
 
@@ -142,6 +180,14 @@ class LearningRegistryConfig
     {
         if (isset($this->username)) {
             return $this->username;
+        }
+        return false;
+    }
+    
+    public function getLoader()
+    {
+        if (isset($this->loader)) {
+            return $this->loader;
         }
         return false;
     }
