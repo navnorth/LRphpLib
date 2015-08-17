@@ -123,7 +123,12 @@ class LearningRegistryPublish extends LearningRegistryDefault
         $this->resourceData = $resourceData;
 
     }
-
+    
+    public function getResourceData()
+    {
+        return $this->resourceData;
+    }
+    
     public function verifyDocument($tos = false)
     {
 
@@ -232,21 +237,22 @@ class LearningRegistryPublish extends LearningRegistryDefault
         unset($document->node_timestamp);
         unset($document->create_timestamp);
 
-        //$jsonDocument = json_encode($document);
-        
         $bencoder = new \LearningRegistry\Bencode\LearningRegistryBencodeEncoderTrial();
         $document = (array) $document;
         $bencodedDocument = utf8_encode($bencoder->encode($document));
         $hashedDocument = hash('SHA256', $bencodedDocument);
 
         global $loader;
+        if (!isset($loader)) {
+            $loader = $this->getLoader();
+        }
         spl_autoload_unregister(array($loader, 'loadClass'));
 
         require_once dirname(__FILE__).'/../OpenPGP/openpgp.php';
         require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_rsa.php';
         require_once dirname(__FILE__).'/../OpenPGP/openpgp_crypt_symmetric.php';
 
-        $keyASCII = file_get_contents($this->getKeyPath());
+        $keyASCII = $this->getKey();
 
         $keyEncrypted = \OpenPGP_Message::parse(\OpenPGP::unarmor($keyASCII, 'PGP PRIVATE KEY BLOCK'));
 
