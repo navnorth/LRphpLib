@@ -20,19 +20,19 @@ class LearningRegistryDefault
         }
     }
 
-	public function getDocumentOK()
+    public function getDocumentOK()
     {
         if (is_object(json_decode($this->data->response))) {
             $data = json_decode($this->data->response);
             if (isset($data->document_results[0]->OK)) {
                 if (trim($data->document_results[0]->OK)!="") {
                     return $data->document_results[0]->OK;
-                } 
-			}
+                }
+            }
         }
-		
-		return false;
-		
+        
+        return false;
+        
     }
 
     public function getOK()
@@ -155,13 +155,13 @@ class LearningRegistryDefault
     {
         return $this->LearningRegistryConfig->getFingerprint();
     }
-	
-	public function getLoader()
+    
+    public function getLoader()
     {
         return $this->LearningRegistryConfig->getLoader();
     }
-	
-	public function getKey()
+    
+    public function getKey()
     {
         return $this->LearningRegistryConfig->getKey();
     }
