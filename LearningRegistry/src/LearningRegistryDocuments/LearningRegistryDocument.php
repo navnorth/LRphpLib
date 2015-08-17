@@ -7,6 +7,22 @@ class LearningRegistryDocument
   
     protected $LearningRegistryConfig;
     protected $document;
+    
+    public function ObjectToArray()
+    {
+        $identity = array();
+        foreach ($this->document->identity as $key => $value) {
+            $identity[$key] = $value;
+        }
+        unset($this->document->identity);
+        $this->document->identity = $identity;
+        $tos = array();
+        foreach ($this->document->TOS as $key => $value) {
+            $tos[$key] = $value;
+        }
+        unset($this->document->TOS);
+        $this->document->TOS = $tos;
+    }
       
     public function __construct($data)
     {
@@ -36,7 +52,7 @@ class LearningRegistryDocument
             );
             $data = $LRObtain->getDocuments();
             $this->document = $data[0]->document[0];
-          
+            $this->ObjectToArray();
         }
         
     }
@@ -98,7 +114,7 @@ class LearningRegistryDocument
     public function setTosFields($fieldsArray)
     {
     
-        $this->LearningRegistryService->setTosFields($fieldsArray);
+            $this->LearningRegistryService->setTosFields($fieldsArray);
     
     }
     
