@@ -13,7 +13,6 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "passphrase" => "Fearher0!", // passphrase
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
-                                                             //"fingerprint" => "CB9199E9F378EB8F733344C251CB8D313BB20B39",
                                                              "keyPath" => "C:/pat/rsa.key", // path to key file
                                                              "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
