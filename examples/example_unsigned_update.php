@@ -9,12 +9,12 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "username" => "info@pgogywebstuff.com", //username
                                                              "https" => 1, //whether the use https
                                                              "signing" => 1, //sign or not sign
-                                                             "password" => "Fearher0!", // passowrd
-                                                             "passphrase" => "Fearher0!", // passowrd
+                                                             "password" => "", // passowrd
+                                                             "passphrase" => "", // passowrd
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
-                                                             "keyPath" => "C:/pat/privatekey.txt", // path to key file
-                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
+                                                             "keyPath" => "", // path to key file
+                                                             "publicKeyPath" => "" // url for public key
                                                            )
 );
 
