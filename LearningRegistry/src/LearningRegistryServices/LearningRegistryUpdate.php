@@ -52,9 +52,6 @@ class LearningRegistryUpdate extends LearningRegistryPublish
                     trigger_error("Username and OAuth not set");
                 }
             }
-            echo "****";
-            print_r(json_decode($this->document));
-            echo "****";
             $this->service($this->getNodeUrl(), "publish", $this->getAuthorization(), $this->document, "POST");
         }
     }
