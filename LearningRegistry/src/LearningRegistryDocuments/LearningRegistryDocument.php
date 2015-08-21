@@ -38,6 +38,8 @@ class LearningRegistryDocument
             );
         
         } elseif (is_array($data)) {
+            $this->LearningRegistryService = $data[2];
+        
             $LRConfig = new \LearningRegistry\LearningRegistryConfig(
                 array( "url" => $data[0])
             );
@@ -52,8 +54,12 @@ class LearningRegistryDocument
             );
             $data = $LRObtain->getDocuments();
             $this->document = $data[0]->document[0];
+            unset($data[0]->document[0]->digital_signature);
             $this->ObjectToArray();
+        
         }
+        
+        return $this;
         
     }
     
