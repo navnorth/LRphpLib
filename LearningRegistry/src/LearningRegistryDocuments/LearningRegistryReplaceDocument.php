@@ -8,30 +8,6 @@ class LearningRegistryReplaceDocument extends LearningRegistryDocument
     protected $LearningRegistryConfig;
     protected $document;
     protected $id;
-      
-    public function __construct($data)
-    {
-    
-        if (is_array($data)) {
-            $LRConfig = new \LearningRegistry\LearningRegistryConfig(
-                array( "url" => $data[0])
-            );
-                                                         
-            $LRObtain = new \LearningRegistry\LearningRegistryServices\LearningRegistryObtain($LRConfig);
-                                                             
-            $LRObtain->ObtainService(
-                array(
-                          "request_id" => $data[1],
-                          "by_doc_ID" => "T",
-                        )
-            );
-            $documentData = $LRObtain->getDocuments();
-            $this->document = $documentData[0]->document[0];
-            $this->id = $data[1];
-            $this->ObjectToArray();
-        }
-        
-    }
     
     public function emptyDocument($LR)
     {
@@ -60,7 +36,11 @@ class LearningRegistryReplaceDocument extends LearningRegistryDocument
                     break;
                 case "identity": $LR->setIdFields($fieldValue);
                     break;
-                default: unset($this->document->{$field});
+                default:    if (is_object($this->document->{$field})) {
+                                unset($this->document->{$field});
+                } else {
+                    unset($this->document->{$field});
+                }
                     break;
             }
         }
