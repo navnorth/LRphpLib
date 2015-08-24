@@ -28,6 +28,11 @@ class LearningRegistryUpdate extends LearningRegistryPublish
                 trigger_error("replaces not set");
                 return false;
             }
+			
+			if (isset($this->resourceData->replaces) && !is_array($this->resourceData->replaces)) {
+                trigger_error("replaces should be an array");
+                return false;
+            }
       
             if (!isset($this->resourceData->resource_data)) {
                 trigger_error("resource_data not set");
