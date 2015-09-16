@@ -55,7 +55,11 @@ class LearningRegistryDefault
     {
         if (is_object(json_decode($this->data->response))) {
             $data = json_decode($this->data->response);
-            return $data->document_results[0]->error;
+			if (isset($data->document_results[0])) {
+			  return $data->document_results[0]->error;
+			} else {
+			  return $data->message;
+			}
         } else {
             return $this->data->response;
         }
@@ -202,9 +206,9 @@ class LearningRegistryDefault
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                 if ($e->hasResponse()) {
-                    return (object) array(
-                    "statusCode" => $res->getStatusCode(),
-                    "response" => $res->getBody()
+					return (object) array(
+                    "statusCode" => $e->getResponse()->getStatusCode(),
+                    "response" => $e->getResponse()->getBody()
                     );
                 }
             } catch (\GuzzleHttp\Exception\RequestException $e) {
@@ -233,9 +237,12 @@ class LearningRegistryDefault
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                 if ($e->hasResponse()) {
+					echo "<pre>";
+					print_r($e);
+					die();
                     return (object) array(
-                    "statusCode" => $res->getStatusCode(),
-                    "response" => $res->getBody()
+                    "statusCode" => $e->getStatusCode(),
+                    "response" => $e->getBody()
                     );
                 }
             } catch (\GuzzleHttp\Exception\RequestException $e) {
