@@ -8,13 +8,13 @@ $LRConfig = new LearningRegistry\LearningRegistryConfig(
                                                              "url" => "sandbox.learningregistry.org", //ul
                                                              "username" => "info@pgogywebstuff.com", //username
                                                              "https" => 1, //whether the use https
-                                                             "signing" => 1, //sign or not sign
-                                                             "password" => "", // password
-                                                             "passphrase" => "", // passphrase
+                                                             "signing" => 0, //sign or not sign
+                                                             "password" => "Fearher0", // password
+                                                             "passphrase" => "Fearher0!", // passphrase
                                                              "oauthSignature" => "", // oauth signature
                                                              "auth" => "basic", // use oauth or basic
-                                                             "keyPath" => "", // path to key file
-                                                             "publicKeyPath" => "" // url for public key
+                                                             "keyPath" => "C:/pat/rsa.key", // path to key file
+                                                             "publicKeyPath" => "http://www.pgogywebstuff.com/public_key.txt" // url for public key
                                                            )
 );
 
@@ -67,11 +67,14 @@ if ($LR->verifyDocument()) {
       
     $LR->PublishService();
     echo "the response code is " . $LR->getStatusCode() . "<br />";
-    echo "the OK is " . $LR->getOK() . "<br />";
-    print_r($LR->getResponse());
-    if ($LR->getOK()!="1") {
+	if ( $LR->getStatusCode() == 200 ) {
+      echo "the OK is " . $LR->getOK() . "<br />";
+      if ($LR->getOK()!="1") {
         echo "the Error is " . $LR->getError() . "<br />";
-    } else {
+      } else {
         echo "the doc ID is " . $LR->getDocID() . "<br />";
-    }
+      }
+	} else {
+	  echo "the Error is " . $LR->getError() . "<br />";
+	}
 }
