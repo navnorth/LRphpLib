@@ -30,9 +30,9 @@ class LearningRegistryDefault
                 }
             }
         }
-        
+
         return false;
-        
+
     }
 
     public function getOK()
@@ -159,12 +159,12 @@ class LearningRegistryDefault
     {
         return $this->LearningRegistryConfig->getFingerprint();
     }
-    
+
     public function getLoader()
     {
         return $this->LearningRegistryConfig->getLoader();
     }
-    
+
     public function getKey()
     {
         return $this->LearningRegistryConfig->getKey();
@@ -182,12 +182,15 @@ class LearningRegistryDefault
 
     public function getUrl($method)
     {
-
         $client = new \GuzzleHttp\Client();
+
+        //get url for api call
+        $strUrl = $this->interface->getHost().$this->interface->getPath();
+
         if ($method == "POST") {
             try {
                 $res = $client->post(
-                    $this->interface,
+                    $strUrl,
                     [
                     'config' => [
                     'curl' => [
@@ -219,8 +222,9 @@ class LearningRegistryDefault
             }
         } else {
             try {
+
                 $res = $client->get(
-                    $this->interface,
+                    $strUrl,
                     [
                     'config' => [
                     'curl' => [
@@ -233,7 +237,7 @@ class LearningRegistryDefault
                 );
                 return (object) array(
                 "statusCode" => $res->getStatusCode(),
-                "response" => $res->getBody()
+                "response" => (string) $res->getBody()
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                 if ($e->hasResponse()) {
